@@ -1,3 +1,4 @@
+/*task0001-1/2*/
 h1{
 	color:blue;
 }
@@ -41,4 +42,171 @@ li strong{
 	}
 a[href="https://github.com/timeless15"]{
 	color:red;
+}
+/*task0001-6*/
+.box-medium1{
+	background-color: #eb4d4b;;
+	width: 960px;
+	height: 50px;
+	margin: 0 auto;
+}
+.box-medium2{
+	background-color: #eb4d4b;;
+	width: 960px;
+	height: 50px;
+	margin-top: 10px;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+}
+/*refer to CSS Mastery*/
+.box-border-radius{
+	width: 20em;
+	background: url(img/bottom-left.gif) no-repeat left bottom;
+	margin:80px auto 10px;
+}
+.box-out{
+	background: url(img/bottom-right.gif) no-repeat right bottom;
+	padding-bottom: 1em;
+}
+.box-inner{
+	background: url(img/top-left.gif) no-repeat left top;
+}
+.box-border-radius h2{
+	background: url(img/top-right.gif) no-repeat right top;
+	padding: 1em 1em 0;
+}
+.box-border-radius span {
+	padding: 0 1em;
+}
+.circle{
+	width: 100px;
+	height: 50px;
+	margin-top: 60px;
+	overflow: hidden;
+}
+.div2,.div3,.div4,.div5{
+	height: 1px;
+	background-color: lightblue;
+	overflow: hidden;
+}
+.div1{
+	margin: 0px 5px;
+	border-top: 1px solid black;
+}
+.div2{
+	margin: 0px 3px;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
+.div3{
+	margin: 0px 3px;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
+.div4{
+	margin: 0px 1px;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
+.div5{
+	margin: 0px 1px;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
+.main{
+	height: 20px;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	background: lightblue;
+}
+.two-column1 .left{
+	float: left;
+	width: 100px;
+	height: 100px;
+	background-color: #eb4d4b;
+}
+.two-column1 .right{
+	margin-left: 100px;
+	height: 100px;
+	background-color: #686de0
+}
+.two-column2{
+	margin-top: 10px;
+	position: relative;
+}
+.two-column2 .left{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100px;
+	height: 100px;
+	background-color: #eb4d4b;
+}
+.two-column2 .right{
+	height: 100px;
+	background-color: #686de0;
+}
+
+.three-column1{
+	margin:10px 0;
+}
+.three-column1 .left{
+	float: left;
+	width: 100px;
+	height: 100px;
+	background-color: #eb4d4b
+}
+.three-column1 .right{
+	float: right;
+	width: 100px;
+	height: 100px;
+	background-color: #f6e58d;
+}
+.three-column1 .medium{
+	background-color: #686de0;
+	margin-left: 100px;
+	margin-right: 100px;
+	height: 100px;
+}
+.three-column2{
+	position: relative;
+	margin: 10px 0;
+}
+.three-column2 .left{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100px;
+	height: 100px;
+	background-color: #eb4d4b;
+}
+.three-column2 .right{
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 100px;
+	height: 100px;
+	background-color: #f6e58d;
+}
+.three-column2 .medium{
+	height: 100px;
+	margin-left: 100px;
+	margin-right: 100px;
+	background-color: #686de0;
+}
+
+.auto-box{
+	background-color: #686de0;
+	padding: 20px;
+	width: 500px;
+	/*overflow:hidden*/
+}
+.auto-box .inner-box{
+	background-color: #eb4d4b;
+	margin: 10px;
+	width: 100px;
+	height: 100px;
+	display: inline-block;
+	/*float:left*/
 }
