@@ -1,3 +1,4 @@
+/*2. JavaScript数据类型及语言基础*/
 // 判断arr是否为一个数组，返回一个bool值
 function isArray(arr){
     return Array.isArray(arr);
@@ -133,3 +134,117 @@ function isMobilePhone(phone) {
     return reg.test(phone);
 }
 
+/*DOM*/
+// 为element增加一个样式名为newClassName的新样式
+function addClass(element, newClassName) {
+    element.className+=" "+newClassName;
+    //element.classList.add(newClassName);
+}
+
+// 移除element中的样式oldClassName
+function removeClass(element, oldClassName) {
+    element.className.replace(/\boldClassName\b/g,"");
+    //element.classList.remove(oldClassName);
+}
+
+// 判断siblingNode和element是否为同一个父元素下的同一级的元素，返回bool值
+function isSiblingNode(element, siblingNode) {
+    return element.parentElement == siblingNode.parentElement ? true :false;
+}
+
+// 获取element相对于浏览器窗口的位置，返回一个对象{x, y}
+function getPosition(element) {
+    return {
+        x:element.getBoundingClientRect().left,
+        y:element.getBoundingClientRect().top
+    };//offsetTop/Left 是相对于parent的位置。
+}
+// 实现一个简单的Query
+function $(selector) {
+    var words = selector.split(" ");
+    var regArr = [/^[A-Za-z]+/,/^\#{1}/,/^\.{1}/,/^\[.+\]$/]
+    var result;
+    for(var i=0;i<words.length;i++){
+        for(var j=0,al=regArr.length;j<al;j++){
+            if(regArr[j].test(words[i])) break;
+        }
+        switch(j)
+            case 0 :
+                result=document.getElementsByTagName(words[i])[0];
+                break;
+            case 1 :
+                result=document.getElementById(words[i].replace(regArr[j],""));
+            case 2 :
+                result=document.getElementsByClassName(words[i].replace(regArr[j],""))[0];
+            case 3 :
+                result=
+        }
+    if(j=0)
+
+        }
+}
+
+// 给一个element绑定一个针对event事件的响应，响应函数为listener
+function addEvent(element, event, listener) {
+    element.addEventListener(event,listener);
+}
+// 移除element对象对于event事件发生时执行listener的响应
+function removeEvent(element, event, listener) {
+    element.removeEventListenr(event,listener);
+}
+// 实现对click事件的绑定
+function addClickEvent(element, listener) {
+    addEvent(element,"click",listener);
+}
+
+// 实现对于按Enter键时的事件绑定
+function addEnterEvent(element, listener) {
+    addEvent(element,"keydown",function(event){
+        if(event.keyCode==13){
+            listener();
+        }
+    });
+}
+function delegateEvent(element, tag, eventName, listener) {
+    addEvent(element,eventName,function(event){
+
+    })
+}
+
+/*BOM*/
+// 判断是否为IE浏览器，返回-1或者版本号
+//IE11 "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.3; rv:11.0) like Gecko"
+//IE10 "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.3)"
+//IE9  "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.3)"
+//IE8  "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.3)"
+function isIE() {
+    var s = navigator.userAgent;
+    s=s.match((/msie\s([\d.]+)/i) || (/rv\:([\d.]+)/i));
+    if(s) return s[1]
+    else return -1
+}
+
+// 设置cookie
+function setCookie(cookieName, cookieValue, expiredays) {
+    var d = new Date();
+    d.setTime(d.getTime()+(expiredays*24*60*60*1000));
+    var expires ="expires="+d.toUTCString();
+    document.cookie=cookieName+"="+cookieValue+";"+expires+";path=/"
+}
+
+// 获取cookie值
+function getCookie(cookieName) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(";");
+    for(var i=0;i<ca.length;i++){
+        var c = ca[i];
+        while(c.charAt[0]==' '){
+            c = c.subString(1);
+        }
+        if(c.indexOf(name)==0){
+            return c.subString(name.length,c.length);
+        }
+    }
+    return "";
+}
