@@ -162,30 +162,69 @@ function getPosition(element) {
     return {
         x:element.getBoundingClientRect().left,
         y:element.getBoundingClientRect().top
-    };//offsetTop/Left 是相对于parent的位置，如果滚动的话offset值是会超过整屏的
+    };
+    //offsetTop/Left 是相对于parent的位置，如果滚动的话offset值是会超过整屏的
+    //getBoundingClientRect()方法返回一个对象，其中包含了left、right、top、bottom四个属性，分别对应了该元素的左上角和右下角相对于浏览器窗口（viewport）左上角的距离。
 }
 
 // 实现一个简单的Query
 function $(selector) {
-    var words = selector.split(" ");
-    var regArr = [/^[A-Za-z]+/,/^\#{1}/,/^\.{1}/,/^\[.+\]$/]
-    var result;
-    for(var i=0;i<words.length;i++){
-        for(var j=0,al=regArr.length;j<al;j++){
-            if(regArr[j].test(words[i])) break;
-        }
-        switch(j){
-            case 0 :
-                result=document.getElementsByTagName(words[i])[0];
-                break;
-            case 1 :
-                result=document.getElementById(words[i].replace(regArr[j],""));
-            case 2 :
-                result=document.getElementsByClassName(words[i].replace(regArr[j],""))[0];
-            case 3 :
-                result=1;
-        }
+
+}
+function miniQuery(selector,root){
+    var result =[],
+        content = selector.substr(1),
+        childs = null,
+        regSelect = new RegExp("\\b" + content + "\\b");
+    root = root || document;
+    switch (selector[0]){
+        case '#': //id
+            //getElementById只能被document调用，因为id全局只有一个
+            //而getElementsByClass可以被element调用
+            result.push(document.getElementById(content));
+            break;
+        case '.': //class
+            if(root.getElementsByClass(content)){
+                result.push(root.getElementsByClass(content));
+            //getElementsByClas在ie8以下不适用
+            }else{
+                childs = root.getElementsByTagName("*");
+                for(var i=0;i<childs.length;i++){
+                    var classStr = childs[i].getAttribute("class");
+                    if (regSelect.test(classStr))
+                        result.push(childs[i]);
+                }
+            }
+            break;
+        case '[': //attr
+            //没有属性值
+            if(selector.indexOf("=")===-1){
+                childs = root.getElementsByTagName("*");
+                for(var i=0;i<childs.length;i++){
+                    if(childs[i].getAttribute(selector.slice(1,-1))!==null){
+                        result.push(childs[i]);
+                    }
+                }
+            }
+            //有属性值
+            else{
+                var eindex = selector.indexOf("="),
+                    key = select.slice(1,eindex),
+                    value = select.slice(eindex+1,-1);
+                childs = root.getElementsByTagName("*");
+                for(var i=0;i<childs.length;i++){
+                    if(childs[i].getAttribute(key)===value){
+                        result.push(childs[i]);
+                    }
+                }
+                
+            }
+            break;
+        default: //tag
+            result.push(root.getElementsByTagName(selector));
+            break；
     }
+    return result;
 }
 
 // 给一个element绑定一个针对event事件的响应，响应函数为listener
