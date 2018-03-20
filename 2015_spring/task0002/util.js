@@ -30,6 +30,8 @@ function cloneObject(src){
         case "[object Array]":
             var temp = new Array();
             for(var i=0,a;a=src[i];i++){
+                 //temp.push(cloneObject(a))，数组遍历，使用push的方法会使所有的元素变成undefined
+                 //???试了一下push方法没有问题
                 temp[i]=cloneObject(a);
             }
             clone = temp;
@@ -37,6 +39,7 @@ function cloneObject(src){
             break;
         case "[object Object]":
             var temp={};
+            //object自带keys的方法，得到的结果是数组
             var keys = Object.keys(src);
             for(var i=0,a;a=keys[i];i++){
                 temp[a]=cloneObject(src[a]);
@@ -124,6 +127,7 @@ function getObjectLength2(obj){
 }
 // 判断是否为邮箱地址
 function isEmail(emailStr) {
+    //.可以出现在@前 ，后缀域名可以有多个
     var reg = /^(\w+\.)*\w+\@\w+(\.\w+)+$/;
     return reg.test(emailStr);
 }
@@ -149,7 +153,8 @@ function removeClass(element, oldClassName) {
 
 // 判断siblingNode和element是否为同一个父元素下的同一级的元素，返回bool值
 function isSiblingNode(element, siblingNode) {
-    return element.parentElement == siblingNode.parentElement ? true :false;
+    //和parentNode的区别，parentElement returns null if the parent node is not an element node，一般parentNode使用更多
+    return element.parentElement === siblingNode.parentElement;
 }
 
 // 获取element相对于浏览器窗口的位置，返回一个对象{x, y}
@@ -157,8 +162,9 @@ function getPosition(element) {
     return {
         x:element.getBoundingClientRect().left,
         y:element.getBoundingClientRect().top
-    };//offsetTop/Left 是相对于parent的位置。
+    };//offsetTop/Left 是相对于parent的位置，如果滚动的话offset值是会超过整屏的
 }
+
 // 实现一个简单的Query
 function $(selector) {
     var words = selector.split(" ");
@@ -168,7 +174,7 @@ function $(selector) {
         for(var j=0,al=regArr.length;j<al;j++){
             if(regArr[j].test(words[i])) break;
         }
-        switch(j)
+        switch(j){
             case 0 :
                 result=document.getElementsByTagName(words[i])[0];
                 break;
@@ -177,11 +183,9 @@ function $(selector) {
             case 2 :
                 result=document.getElementsByClassName(words[i].replace(regArr[j],""))[0];
             case 3 :
-                result=
+                result=1;
         }
-    if(j=0)
-
-        }
+    }
 }
 
 // 给一个element绑定一个针对event事件的响应，响应函数为listener
