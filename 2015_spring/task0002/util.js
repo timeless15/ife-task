@@ -167,27 +167,81 @@ function getPosition(element) {
 
 // 实现一个简单的Query
 function $(selector) {
-    var words = selector.split(" ");
-    var regArr = [/^[A-Za-z]+/,/^\#{1}/,/^\.{1}/,/^\[.+\]$/]
-    var result;
-    for(var i=0;i<words.length;i++){
-        for(var j=0,al=regArr.length;j<al;j++){
-            if(regArr[j].test(words[i])) break;
+   selector = selector.trim();
+   var result = [];
+   if(!selector) return null;
+   if(selector==document) return document;
+   if(selector.indexOf("=")==-1){//只有一个元素，直接查询
+        result = miniQuery(selector);
+   }
+   else{
+        var selectorArr = selector.split(/\s+/);
+        var root = miniQuery(selectorArr[0],document);
+        for(var i=1,len=selectorArr.length;i<len;i++){
+            var temp = miniQuery(selector[i],root);
+            root = temp;
         }
-        switch(j){
-            case 0 :
-                result=document.getElementsByTagName(words[i])[0];
-                break;
-            case 1 :
-                result=document.getElementById(words[i].replace(regArr[j],""));
-            case 2 :
-                result=document.getElementsByClassName(words[i].replace(regArr[j],""))[0];
-            case 3 :
-                result=1;
-        }
+        result = root;
+   }
+   return result;//miniQuery直接返回元素列表中的第一个元素，简化
+}
+function miniQuery(selector, root) {
+    var signal = selector[0]; //
+    var allChildren = null;
+    var content = selector.substr(1);
+    var currAttr = null;
+    var result = [];
+    root = root || document; //若没有给root，赋值document
+    switch (signal) {
+        case "#":
+            result.push(document.getElementById(content));
+            break;
+        case ".":
+            allChildren = root.getElementsByTagName("*");
+            // var pattern0 = new RegExp("\\b" + content + "\\b");
+            for (i = 0; i < allChildren.length; i++) {
+                currAttr = allChildren[i].getAttribute("class");
+                if (currAttr !== null) {
+                    var currAttrsArr = currAttr.split(/\s+/);
+                    console.log(currAttr);
+                    for (j = 0; j < currAttrsArr.length; j++) {
+                        if (content === currAttrsArr[j]) {
+                            result.push(allChildren[i]);
+                            console.log(result);
+                        }
+                    }
+                }
+            }
+            break;
+        case "[": //属性选择
+            if (content.search("=") == -1) { //只有属性，没有值
+                allChildren = root.getElementsByTagName("*");
+                for (i = 0; i < allChildren.length; i++) {
+                    if (allChildren[i].getAttribute(selector.slice(1, -1)) !== null) {
+                        result.push(allChildren[i]);
+                    }
+                }
+            } else { //既有属性，又有值
+                allChildren = root.getElementsByTagName("*");
+                var pattern = /\[(\w+)\s*\=\s*(\w+)\]/; //为了分离等号前后的内容
+                var cut = selector.match(pattern); //分离后的结果，为数组
+                var key = cut[1]; //键
+                var value = cut[2]; //值
+                for (i = 0; i < allChildren.length; i++) {
+                    if (allChildren[i].getAttribute(key) == value) {
+                        result.push(allChildren[i]);
+                    }
+                }
+            }
+            break;
+        default: //tag
+            result = root.getElementsByTagName(selector);
+            break;
     }
+    return result[0];
 }
 
+/*Event*/
 // 给一个element绑定一个针对event事件的响应，响应函数为listener
 function addEvent(element, event, listener) {
     element.addEventListener(event,listener);
@@ -204,16 +258,44 @@ function addClickEvent(element, listener) {
 // 实现对于按Enter键时的事件绑定
 function addEnterEvent(element, listener) {
     addEvent(element,"keydown",function(event){
-        if(event.keyCode==13){
+        if(event.keyCode==13){ //keycode返回按下键的数组，enter是13
             listener();
         }
     });
 }
-function delegateEvent(element, tag, eventName, listener) {
-    addEvent(element,eventName,function(event){
 
+//将函数与$绑定
+$.on = addEvent;
+$.un = removeEvent;
+$.click = addClickEvent;
+$.enter = addEnterEvent;
+
+function clickListener(event) {
+    console.log(event);
+}
+function renderList() {
+    $("#list").innerHTML = '<li>new item</li>';
+}
+
+function init() {
+    each($("#list").getElementsByTagName('li'), function(item) {
+        $.click(item, clickListener);
+    });
+    $.click($("#btn"), renderList);//rederList后面如果直接加（），函数会立即执行，ul更新为新的内容
+}
+//init();
+// 事件代理
+function delegateEvent(element, tag, eventName, listener) {
+    $.on(element,eventName,function(e){
+        var target = e.target || e.srcElement;
+        if(target.nodeName == tag.toUpperCase() ){
+            $.click(target,listener);
+        }
     })
 }
+$.delegate = delegateEvent;
+$.click($("#btn"), renderList);
+$.delegate($("#list"), "li", "click", clickListener);
 
 /*BOM*/
 // 判断是否为IE浏览器，返回-1或者版本号
@@ -223,6 +305,7 @@ function delegateEvent(element, tag, eventName, listener) {
 //IE8  "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; Trident/7.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.3)"
 function isIE() {
     var s = navigator.userAgent;
+    //11和10及以下不同
     s=s.match((/msie\s([\d.]+)/i) || (/rv\:([\d.]+)/i));
     if(s) return s[1]
     else return -1
@@ -233,22 +316,85 @@ function setCookie(cookieName, cookieValue, expiredays) {
     var d = new Date();
     d.setTime(d.getTime()+(expiredays*24*60*60*1000));
     var expires ="expires="+d.toUTCString();
-    document.cookie=cookieName+"="+cookieValue+";"+expires+";path=/"
+    document.cookie=cookieName+"="+encodeURIComponent(cookieValue)+";"+expires+";path=/"
 }
 
 // 获取cookie值
 function getCookie(cookieName) {
-    var name = cname + "=";
+    var name = cookieName + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
     var ca = decodedCookie.split(";");
     for(var i=0;i<ca.length;i++){
         var c = ca[i];
         while(c.charAt[0]==' '){
-            c = c.subString(1);
+            c = c.substring(1);
         }
         if(c.indexOf(name)==0){
-            return c.subString(name.length,c.length);
+            return c.substring(name.length,c.length);
         }
     }
     return "";
 }
+
+/*AJAX*/
+// 学习Ajax，并尝试自己封装一个Ajax方法。实现如下方法：
+/*options是一个对象，里面可以包括的参数为：
+    type: post或者get，可以有一个默认值
+    data: 发送的数据，为一个键值对象或者为一个用&连接的赋值字符串
+    onsuccess: 成功时的调用函数
+    onfail: 失败时的调用函数*/
+
+function ajax(url, options) {
+    //先处理data数据，如果data是obejct，要转换为&连接的字符串
+    var dataR = options.data;
+    if(typeof dataR == 'object' ){
+        var str = ""
+        for(var key in dataR){
+            str += key + "=" + dataR[key] + "&";
+        }
+        dataR = str.slice(0,-1);//去掉最后一个&
+    }
+
+    var type = options.type || 'GET';//默认为get
+
+    var xmlhttp = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObjec("Microsoft.XMLHTTP");
+    
+    xmlhttp.open(type,url,true);
+
+    if(type == 'GET'){
+        xmlhttp.send();
+    }
+    else {
+        xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        //setRequestHeader要在open之后，send之前调用，后面的值针对不同的协议是固定的，上面的写法规定了http协议
+        xmlhttp.send();
+    }
+    
+    xmlhttp.onreadystatechange=function(){
+        if (xmlhttp.readyState==4 ){
+            if(xmlhttp.status==200)
+                options.onsuccess(xmlhttp.responseText,xmlhttp.responseXML);
+            else{
+                if(options.onfail()){
+                    options.onfail();
+                }
+            }
+                
+        }
+    }
+    
+}
+
+// 使用示例：
+ajax(
+    'http://localhost:8080/server/ajaxtest', 
+    {
+        data: {
+            name: 'simon',
+            password: '123456'
+        },
+        onsuccess: function (responseText, xhr) {
+            console.log(responseText);
+        }
+    }
+);
