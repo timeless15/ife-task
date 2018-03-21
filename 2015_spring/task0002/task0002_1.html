@@ -6,14 +6,34 @@
     <link rel="stylesheet" type="text/css" href="css/task0002_1.css">
 </head>
 <body>
-    <form>
-       <input id="input1" type="text" name="intersts" value="">
-       <button id="btn">submit</button>
-    </form>
-    <div id="list">
+	<h1>TASK0002-1</h1>
 
-    </div>
+	<h2>STEP1</h2>
+	<P>在页面中，有一个单行输入框，一个按钮，输入框中用来输入用户的兴趣爱好，允许用户用半角逗号来作为不同爱好的分隔。</p>
+	<p>当点击按钮时，把用户输入的兴趣爱好，按照上面所说的分隔符分开后保存到一个数组，过滤掉空的、重复的爱好，在按钮下方创建一个段落显示处理后的爱好。</P>
+    <form>
+       <input id="input1" type="text">
+       <button id="btn1">submit</button>
+    </form>
+    
+    <h2>STPE2</h2>
+    <p>单行变成多行输入框，一个按钮，输入框中用来输入用户的兴趣爱好，允许用户用换行、空格（全角/半角）、逗号（全角/半角）、顿号、分号来作为不同爱好的分隔。</p>
+    <p>当点击按钮时的行为同上</p>
+    <form>
+    	<textarea id="input2" type="text"></textarea>
+    	<button id="btn2">submit</button>
+    </form>
    
+   <h2>STEP3</h2>
+   <p>用户输入的爱好数量不能超过10个，也不能什么都不输入。当发生异常时，在按钮上方显示一段红色的错误提示文字，并且不继续执行后面的行为；当输入正确时，提示文字消失。</p>
+	<p>同时，当点击按钮时，不再是输出到一个段落，而是每一个爱好输出成为一个checkbox，爱好内容作为checkbox的label。</p>
+	<form>
+    	<textarea id="input3" type="text"></textarea>
+    	<button id="btn3">submit</button>
+    	<p id="message1" class="error">爱好数量不能超过10个</p>
+    	<p id="message2" class="error">输入内容不能为空</p>
+    </form>
 </body>
+<script src="js/util.js"></script>
 <script src="js/task0002_1.js"></script>
 </html>

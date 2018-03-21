@@ -294,8 +294,8 @@ function delegateEvent(element, tag, eventName, listener) {
     })
 }
 $.delegate = delegateEvent;
-$.click($("#btn"), renderList);
-$.delegate($("#list"), "li", "click", clickListener);
+//$.click($("#btn"), renderList);
+//$.delegate($("#list"), "li", "click", clickListener);
 
 /*BOM*/
 // 判断是否为IE浏览器，返回-1或者版本号
@@ -375,7 +375,7 @@ function ajax(url, options) {
             if(xmlhttp.status==200)
                 options.onsuccess(xmlhttp.responseText,xmlhttp.responseXML);
             else{
-                if(options.onfail()){
+                if(options.onfail){
                     options.onfail();
                 }
             }
@@ -386,7 +386,7 @@ function ajax(url, options) {
 }
 
 // 使用示例：
-ajax(
+/*ajax(
     'http://localhost:8080/server/ajaxtest', 
     {
         data: {
@@ -397,4 +397,4 @@ ajax(
             console.log(responseText);
         }
     }
-);
+);*/
