@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IFE-2015Spring-Task0002-2</title>
+    <link rel="stylesheet" type="text/css" href="css/task0002_1.css">
+</head>
+<body>
+	<h1>TASK0002-2</h1>
+    <ul>
+        <li>界面首先有一个文本输入框，允许按照特定的格式YYYY-MM-DD输入年月日；</li>
+        <li>输入框旁有一个按钮，点击按钮后，计算当前距离输入的日期的00:00:00有多少时间差</li>
+        <li>在页面中显示，距离YYYY年MM月DD日还有XX天XX小时XX分XX秒</li>
+        <li>每一秒钟更新倒计时上显示的数</li>
+        <li>如果时差为0，则倒计时停止</li>
+    </ul>
+    <h2>倒计时</h2>
+    <input type="text" name="date" id="date">
+    <button id="btn">倒计时</button>
+    <div id="output">
+
+    </div>
+    <p id="message1" class="error">请检查输入格式</p>
+    <p id="message2" class="error">目标时间小于当前时间</p>
+</body>
+<script src="js/util.js"></script>
+<script src="js/task0002_2.js"></script>
+</html>
