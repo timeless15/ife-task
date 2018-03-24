@@ -1,0 +1,44 @@
+.error{
+	font-size: 16px;
+	display: none;
+	color: red;
+}
+.image-cyc{
+	position: relative;
+	overflow: hidden;
+	height: 305px;
+	width: 500px;
+}
+.image-cyc ul{
+	margin: 0px;
+	padding: 0px;
+}
+.image-cyc li{
+	list-style:none;
+}
+ul.image-wrap {
+	position: absolute;
+	width: 2500px;
+}
+.image-wrap li{
+	position: relative;
+	float: left;
+}
+.image-wrap li.active{
+	
+}
+ul.image-nav{
+	position: absolute;
+    bottom: 10px;
+    left: 210px;
+}
+.image-nav li{
+	display: inline-block;
+}
+.image-nav li a{
+	display: block;
+	width: 10px;
+	height: 10px;
+	border-radius: 5px;
+	background-color: black;
+}

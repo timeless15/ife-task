@@ -185,57 +185,57 @@ function $(selector) {
    }
    return result;//miniQuery直接返回元素列表中的第一个元素，简化
 }
-function miniQuery(selector, root) {
-    var signal = selector[0]; //
-    var allChildren = null;
-    var content = selector.substr(1);
-    var currAttr = null;
-    var result = [];
-    root = root || document; //若没有给root，赋值document
-    switch (signal) {
-        case "#":
+function miniQuery(selector,root){
+    var result =[],
+        content = selector.substr(1),
+        childs = null,
+        regSelect = new RegExp("\\b" + content + "\\b");
+    root = root || document;
+    switch (selector[0]){
+        case '#': //id
+            //getElementById只能被document调用，因为id全局只有一个
+            //而getElementsByClass可以被element调用
             result.push(document.getElementById(content));
             break;
-        case ".":
-            allChildren = root.getElementsByTagName("*");
-            // var pattern0 = new RegExp("\\b" + content + "\\b");
-            for (i = 0; i < allChildren.length; i++) {
-                currAttr = allChildren[i].getAttribute("class");
-                if (currAttr !== null) {
-                    var currAttrsArr = currAttr.split(/\s+/);
-                    console.log(currAttr);
-                    for (j = 0; j < currAttrsArr.length; j++) {
-                        if (content === currAttrsArr[j]) {
-                            result.push(allChildren[i]);
-                            console.log(result);
-                        }
-                    }
+        case '.': //class
+            if(root.getElementsByClassName(content)){
+                result.push(root.getElementsByClassName(content));
+            //getElementsByClasName在ie8以下不适用
+            }else{
+                childs = root.getElementsByTagName("*");
+                for(var i=0;i<childs.length;i++){
+                    var classStr = childs[i].getAttribute("class");
+                    if (regSelect.test(classStr))
+                        result.push(childs[i]);
                 }
             }
             break;
-        case "[": //属性选择
-            if (content.search("=") == -1) { //只有属性，没有值
-                allChildren = root.getElementsByTagName("*");
-                for (i = 0; i < allChildren.length; i++) {
-                    if (allChildren[i].getAttribute(selector.slice(1, -1)) !== null) {
-                        result.push(allChildren[i]);
+        case '[': //attr
+            //没有属性值
+            if(selector.indexOf("=")===-1){
+                childs = root.getElementsByTagName("*");
+                for(var i=0;i<childs.length;i++){
+                    if(childs[i].getAttribute(selector.slice(1,-1))!==null){
+                        result.push(childs[i]);
                     }
                 }
-            } else { //既有属性，又有值
-                allChildren = root.getElementsByTagName("*");
-                var pattern = /\[(\w+)\s*\=\s*(\w+)\]/; //为了分离等号前后的内容
-                var cut = selector.match(pattern); //分离后的结果，为数组
-                var key = cut[1]; //键
-                var value = cut[2]; //值
-                for (i = 0; i < allChildren.length; i++) {
-                    if (allChildren[i].getAttribute(key) == value) {
-                        result.push(allChildren[i]);
+            }
+            //有属性值
+            else{
+                var eindex = selector.indexOf("="),
+                    key = select.slice(1,eindex),
+                    value = select.slice(eindex+1,-1);
+                childs = root.getElementsByTagName("*");
+                for(var i=0;i<childs.length;i++){
+                    if(childs[i].getAttribute(key)===value){
+                        result.push(childs[i]);
                     }
                 }
+                
             }
             break;
         default: //tag
-            result = root.getElementsByTagName(selector);
+            result.push(root.getElementsByTagName(selector));
             break;
     }
     return result[0];
