@@ -53,19 +53,27 @@ $("#btn3").addEventListener("click",function(e){
 	text = filterStr(text);
 	text = uniqueStr(text);
 
-	if(text.length>=10) $("#message1").style.display = "block";
-	else if(text.length==0) $("#message2").style.display = "block";
+	if(text.length>=10) {
+		$("#message1").style.display = "block";
+		$("#message2").style.display = "none";
+	}
+	else if(text.length==0) {
+		$("#message2").style.display = "block";
+		$("#message1").style.display = "none";
+	}
 	else {
 		$("#message1").style.display = "none";
 		$("#message2").style.display = "none";
-		
+	
 		for(var i=text.length-1;i>=0;i--){
+			var wrap = document.createElement("span");
 			var labelEle = document.createElement("label");
 			var checkBox = document.createElement("input");
 			checkBox.setAttribute("type","checkbox");
 			labelEle.innerHTML = text[i];
-			insertAfter(checkBox,this);
-			insertAfter(labelEle,checkBox);
+			insertAfter(wrap,this)
+			wrap.appendChild(checkBox);
+			wrap.appendChild(labelEle);
 		}
 	}
 });
