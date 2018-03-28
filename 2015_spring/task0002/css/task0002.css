@@ -36,9 +36,12 @@ ul.image-nav{
 	display: inline-block;
 }
 .image-nav li a{
-	display: block;
+	display: inline-block;
 	width: 10px;
 	height: 10px;
-	border-radius: 5px;
-	background-color: black;
+	border-radius: 10px;
+	border: 1px solid #fff;
+}
+.image-nav .active a {
+    background-color: #fff;
 }
