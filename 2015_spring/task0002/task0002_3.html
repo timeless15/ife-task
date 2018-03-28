@@ -13,25 +13,28 @@
         <li>图片切换的动画要流畅</li>
         <li>在轮播图下方自动生成对应图片的小点，点击小点，轮播图自动动画切换到对应的图片</li>
     </ul>
-	<div class="image-cyc">
+  <div class="image-cyc">
         <ul class="image-wrap">
-            <li class="active"><img src="img/1.jpg"></li>
-            <li><img src="img/2.jpg"></li>
-            <li><img src="img/3.jpg"></li>
-            <li><img src="img/4.jpg"></li>
-            <li><img src="img/5.jpg"></li>
+            <li class="image-li"  data-num="1"><img src="img/1.jpg"></li>
+            <li class="image-li" data-num="2"><img src="img/2.jpg"></li>
+            <li class="image-li" data-num="3"><img src="img/3.jpg"></li>
+            <li class="image-li" data-num="4"><img src="img/4.jpg"></li>
+            <li class="image-li" data-num="5"><img src="img/5.jpg"></li>
         </ul>
         <ul class="image-nav">
-            <li class="active"><a href="#"></a></li>
-            <li><a href="#"></a></li>
-            <li><a href="#"></a></li>
-            <li><a href="#"></a></li>
-            <li><a href="#"></a></li>
+            <li class="nav-li active" data-num="1"><a href="#"></a></li>
+            <li class="nav-li" data-num="2"><a href="#"></a></li>
+            <li class="nav-li" data-num="3"><a href="#"></a></li>
+            <li class="nav-li" data-num="4"><a href="#"></a></li>
+            <li class="nav-li" data-num="5"><a href="#"></a></li>
         </ul>
     </div>
-    <div class="setting">
-
-    </div>
+    <form class="setting">
+        <p>顺序：1-正序，2-逆序<br>是否循环：1-是，2-否<br>间隔：单位ms</p>
+        <label>顺序</label> <input type="text" id="order"/> <br>
+        <label>循环</label> <input type="text" id="cycle"/> <br>
+        <label>间隔</label> <input type="text" id="time"/>
+    </form>
 </body>
 <script src="js/util.js"></script>
 <script src="js/task0002_3.js"></script>
