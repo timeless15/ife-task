@@ -147,7 +147,14 @@ function addClass(element, newClassName) {
 
 // 移除element中的样式oldClassName
 function removeClass(element, oldClassName) {
-    element.className.replace(/\boldClassName\b/g,"");
+    var classNames = element.className.split(/\s+/);
+    for (var i = 0, len = classNames.length; i < len; i++) {
+        if (classNames[i] === oldClassName) {
+            classNames.splice(i, 1);
+            break;
+        }
+    }
+    element.className = classNames.join(' ');
     //element.classList.remove(oldClassName);
 }
 
