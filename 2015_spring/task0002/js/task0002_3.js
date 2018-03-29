@@ -9,6 +9,7 @@ window.onload=function(){
 	var timeInterval = parseInt($("#time").value) || 3000;
 	var order = $("#order").value || 1;
 	var cycle = $("#cycle").value || 1;
+	image_wrap.style.left = "0px"
 	timer = setInterval(rotate,timeInterval);
 	for(var i=0,len=navs.length;i<len;i++){
 		navs[i].addEventListener("click",function(e){
