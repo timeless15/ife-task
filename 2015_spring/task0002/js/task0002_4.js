@@ -10,11 +10,13 @@
 6.deleteSpan参考了别人的写法，用match的方法会有一个bug，就是当整个单词匹配时 返回null值，则此时按下enter键
 无法更新input值，后来采用了比较简单粗暴的replace方法
 （另外对string的方法以及regexp仍不够熟)
+7.ajax方法对json数据的解析
 */
 var suggestData = ['a', 'abandon', 'abdomen', 'abide', 'ability', 'able', 'abnormal', 'aboard', 'abolish', 'abound', 'about', 'above', 'fiction', 'field', 'fierce', 'fight', 'test2', 'test3'];
 var hintUl = $(".hint-ul")[0];
 var childs = hintUl.getElementsByTagName("li");
-var autoInput = $("#autocomplete")
+var autoInput = $("#autocomplete");
+//var suggestData;loadData();
 autoInput.addEventListener("input",function(){
 	var inputStr = this.value;
 	if(inputStr === "") {
@@ -72,7 +74,17 @@ autoInput.addEventListener("keydown",function(e){
 			hintUl.style.display = "none";
 		}
 	}
-})
+});
+function loadData(){
+	var xhttp = new XMLHttpRequest();
+	xhttp.open('GET','task0002_4.txt',true);
+	xhttp.send();
+	xhttp.onreadystatechange = function(){
+		if(this.readyState == 4 && this.status ==200){
+			suggestData = JSON.parse(this.responseText);
+		}
+	}
+}
 function eventDelegate(element, tag, eventName, listener) {
 	element.addEventListener(eventName,function(e){
 		var event = e || window.event;
