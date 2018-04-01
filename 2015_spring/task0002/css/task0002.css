@@ -3,6 +3,8 @@
 	display: none;
 	color: red;
 }
+}
+/*task2-3*/
 .image-cyc{
 	position: relative;
 	overflow: hidden;
@@ -44,4 +46,42 @@ ul.image-nav{
 }
 .image-nav .active a {
     background-color: #fff;
+}
+/*task2-4*/
+input#autocomplete {
+    width: 150px;
+    height: 30px;
+    margin: 0;
+    margin-left: 50px; 
+    padding: 3px 5px;
+    border: 1px solid  #888;
+    box-sizing: border-box; 
+    outline: 0;  
+}
+.hint-wrap{
+	margin-left: 50px;
+	
+}
+ul.hint-ul{
+	width: 150px;
+	box-sizing: border-box;  
+	padding: 0;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-top: 0;
+}
+.hint-wrap li{
+	list-style: none;
+	padding: 5px 10px;
+	border-top: 1px solid #ccc;
+	cursor: default;
+}
+.hint-wrap li span{
+	color: red;
+}
+.hint-wrap li:first-child{
+	border-top: 0px;
+}
+.hint-wrap li.active{
+	background-color: #ddd;
 }
