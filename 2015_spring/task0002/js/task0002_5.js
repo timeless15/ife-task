@@ -8,18 +8,22 @@ function eventDelegate(element, tag, eventName, listener) {
         }
 	})
 }
+
+$(".con")[0].addEventListener("drop",drop);
+$(".con")[0].addEventListener("dragover",allowDrop);
+$(".con")[1].addEventListener("drop",drop);
+$(".con")[1].addEventListener("dragover",allowDrop);
+eventDelegate($(".con")[0],"div","dragstart",drag);
+eventDelegate($(".con")[1],"div","dragstart",drag);
+
 function allowDrop(ev) {
     ev.preventDefault();
 }
-
 function drag(ev) {
-	console.log(ev.target.id)
     ev.dataTransfer.setData("text", ev.target.id);
 }
-
 function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("text");
-    console.log(data)
     ev.target.appendChild(document.getElementById(data));
 }

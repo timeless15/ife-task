@@ -1,8 +1,10 @@
+*{
+	box-sizing: border-box;
+}
 .error{
 	font-size: 16px;
 	display: none;
 	color: red;
-}
 }
 /*task2-3*/
 .image-cyc{
@@ -84,4 +86,44 @@ ul.hint-ul{
 }
 .hint-wrap li.active{
 	background-color: #ddd;
+}
+/*task2-5*/
+.main{
+	position: absolute;
+}
+.con{
+	width: 204px;
+	min-height: 700px;
+	float: left;
+	border:2px solid black;
+	margin-left: 200px;
+}
+.box{
+	width: 200px;
+	height: 60px;
+	border: 1px solid #fff;
+	color: #fff;
+	line-height: 60px;
+	font-size: 20px;
+	font-family: "Arial";
+	background-color: red;
+	text-align: center;
+	cursor: move;
+    text-align: center;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+.dragged {
+    -webkit-box-shadow: rgba(0, 0, 0, 0.9) 0px 0px 16px;
+    box-shadow: rgba(0, 0, 0, 0.9) 0px 0px 16px;
+    z-index: 999;
+}
+.drag-over {
+    border: 4px dashed #34ED16;
+    width: 192px;
+    height: 64px;
+    line-height: 64px;
 }
