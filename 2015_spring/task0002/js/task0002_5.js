@@ -1,3 +1,12 @@
+//initial set top value
+var con1 = $(".con")[0];
+var div1s = con1.getElementsByTagName("div");
+var con2 = $(".con")[1];
+var div2s = con2.getElementsByTagName("div");
+for(var i=0,len = div1s.length;i<len;i++){
+    div1s[i].style.top= 60*i + "px";
+    div2s[i].style.top= 60*i + "px";
+}
 //user-select跨浏览器
 function eventDelegate(element, tag, eventName, listener) {
     element.addEventListener(eventName,function(e){
