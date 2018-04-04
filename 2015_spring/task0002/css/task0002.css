@@ -97,8 +97,11 @@ ul.hint-ul{
 	float: left;
 	border:2px solid black;
 	margin-left: 200px;
+	position: relative;
 }
 .box{
+	position: absolute;
+	left: 0px;
 	width: 200px;
 	height: 60px;
 	border: 1px solid #fff;
@@ -107,7 +110,6 @@ ul.hint-ul{
 	font-size: 20px;
 	font-family: "Arial";
 	background-color: red;
-	text-align: center;
 	cursor: move;
     text-align: center;
     -webkit-user-select: none;
