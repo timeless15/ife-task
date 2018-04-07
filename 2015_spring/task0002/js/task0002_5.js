@@ -1,5 +1,7 @@
 //user-select跨浏览器
 //使用mouse事件时，要将draggable设为false默认值，否则会由问题
+//计算div跟随鼠标移动，各种坐标的含义
+//mouseevent的事件顺序
 function eventDelegate(element, tag, eventName, listener) {
     element.addEventListener(eventName,function(e){
         var event = e || window.event;
