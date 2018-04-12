@@ -2,9 +2,13 @@
 	box-sizing: border-box;
 	padding:0;
 	margin:0;
+	color:rgb(90,90,90);
 }
 li{
 	list-style: none;
+}
+a{
+	text-decoration: none;
 }
 body {
     height: 100%;
@@ -17,6 +21,7 @@ header {
     background-color: rgb(220,220,220);
     width:100%;
     border-bottom: 1px solid rgb(205,205,205);
+    height: 12%;
 }
 header h1{
 	color:rgb(150,150,150);
@@ -33,7 +38,7 @@ main{
     height: 100%;
 }
 .side {
-    height: 100%;
+    height: 88%;
     float: left;
     width: 460px;
 }
@@ -49,13 +54,14 @@ main{
     border-right: 1px solid rgb(205,205,205);
     background-color: rgb(240,240,240);
     padding: 25px 10px;
-    color: rgb(90,90,90);
+    position: relative;
 }
 .side-task {
     height: 100%;
     width:  50%;
     float: right;
     border-right: 1px solid rgb(205,205,205);
+    position:relative;
 }
 
 .side-item .item-ul li{
@@ -71,4 +77,82 @@ main{
 .side-item .subitem-ul li{
 	background-image: url(../img/subfile.png);
 	background-position: 15px 10px;
+}
+.add {
+	position: absolute;
+	background: rgb(240,240,240);
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	border-top: 1px solid rgb(205,205,205);
+}
+.add a{
+	display:block;
+	width: 100%;
+	text-decoration: none;
+	color: rgb(90,90,90);
+	padding: 10px;
+	padding-left: 50px;
+	background-image: url(../img/add.png);
+	background-repeat:  no-repeat;
+	background-position: 20px center;
+}
+.side-task .task-filter{
+	background: rgb(240,240,240);
+	border-bottom: 1px solid rgb(205,205,205);
+}
+.side-task .task-filter ul{
+	padding: 15px 10px;
+}
+.side-task .task-filter li{
+	display: inline-block;
+	padding-left: 5px;
+	padding-right: 5px;
+	border: 1px solid rgb(240,240,240);
+	font-size: 15px;
+	cursor:pointer;
+}
+.side-task .task-filter li.selected,
+.side-task .task-filter li:hover{
+	background-color:#fff;
+	border:1px solid rgb(205,205,205);
+}
+.side-task .task-content ul.task-list{
+	
+}
+.side-task .task-content ul.task-list>li{
+	
+	
+}
+.side-task .task-content ul.task-list span{
+	display:block;
+	background-color:rgb(247,251,234);
+	padding:10px;
+}
+.side-task .task-content .task-list ul.task-time-list{
+	font-size:14px;
+}
+.side-task .task-content .task-list ul.task-time-list li{
+	padding:5px 0 5px 30px;
+}
+.side-task .task-content .task-list ul.task-time-list li:hover{
+	background-color:rgb(220,220,220);
+	cursor:pointer;
+}
+
+/*main*/
+.main .content-title{
+	background-color: rgb(240,240,240);
+	border-bottom:1px solid rgb(205,205,205);
+	padding: 15px 10px;
+	font-size: 20px;
+	font-weight: bold;
+}
+.main .content-time{
+	background-color:rgb(247,251,234);
+	border-bottom:1px solid rgb(205,205,205);
+	padding:15px 10px;
+}
+.main .content-text{
+	padding:15px 10px;
 }
