@@ -42,18 +42,14 @@ main{
     float: left;
     width: 460px;
 }
-.side h2{
-	font-weight: normal;
-    font-size: 18px;
-    margin-bottom:20px;
-}
+
 .side-item {
     height: 100%;
     width: 50%;
     float: left;
     border-right: 1px solid rgb(205,205,205);
     background-color: rgb(240,240,240);
-    padding: 25px 10px;
+    padding: 25px 0px;
     position: relative;
 }
 .side-task {
@@ -63,20 +59,42 @@ main{
     border-right: 1px solid rgb(205,205,205);
     position:relative;
 }
-
-.side-item .item-ul li{
-	padding-bottom: 5px;
-	padding-top: 5px;
-	padding-left: 40px;
-	background-image: url(../img/file.png);
-	background-repeat:  no-repeat;
-	background-position: 10px 7px;
+.side-item .item-head{
+	padding: 5px 0px 5px 25px;
+	cursor:  pointer;
 }
-.side-item .subitem-ul{margin-left: -30px;}
-
-.side-item .subitem-ul li{
-	background-image: url(../img/subfile.png);
-	background-position: 15px 10px;
+.side-item .item-head.active,
+.side-item .item-head:hover{
+	background-color:#fff;
+}
+.side-item .item-head h2{
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 1em;
+}
+.side-item .item-ul h2{
+	font-weight: normal;
+	font-size: 18px;
+	line-height: 1.5em;
+	padding-left:25px;
+}
+.side-item .item-ul .item-wrap {
+	padding: 5px 0px 5px 50px;
+	cursor:pointer;
+	background: url(../img/file.png) no-repeat 25px center;
+}
+.side-item .item-ul .select .item-wrap,
+.side-item .item-ul .item-wrap:hover {
+    background: url(../img/file.png) no-repeat 25px center #fff;
+}
+.side-item .subitem-ul li {
+	cursor:pointer;
+	padding:5px 0px 5px 70px;
+    background: url(../img/subfile.png) no-repeat 45px center;
+}
+.side-item .subitem-ul .select,
+.side-item .subitem-ul li:hover{
+	background: url(../img/subfile.png) no-repeat 45px center #fff;
 }
 .add {
 	position: absolute;
@@ -124,35 +142,74 @@ main{
 	
 	
 }
-.side-task .task-content ul.task-list span{
+.side-task .task-content .task-list .task-time{
 	display:block;
 	background-color:rgb(247,251,234);
 	padding:10px;
 }
-.side-task .task-content .task-list ul.task-time-list{
+.side-task .task-content .task-list .task-name{
+	padding:5px 0 5px 25px;
+	display:block;
 	font-size:14px;
 }
-.side-task .task-content .task-list ul.task-time-list li{
-	padding:5px 0 5px 30px;
-}
-.side-task .task-content .task-list ul.task-time-list li:hover{
+.side-task .task-content .task-list .select,
+.side-task .task-content .task-list .task-name:hover{
 	background-color:rgb(220,220,220);
 	cursor:pointer;
 }
 
 /*main*/
+.main .add-content{
+	 display: none;
+}
 .main .content-title{
 	background-color: rgb(240,240,240);
 	border-bottom:1px solid rgb(205,205,205);
 	padding: 15px 10px;
 	font-size: 20px;
 	font-weight: bold;
+	position:relative;
 }
-.main .content-time{
+.main .content-date{
 	background-color:rgb(247,251,234);
 	border-bottom:1px solid rgb(205,205,205);
 	padding:15px 10px;
 }
 .main .content-text{
 	padding:15px 10px;
+}
+.main .content-button{
+	position:absolute;
+	bottom:20px;
+	right:10px;
+}
+
+/*modal*/
+.modal{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height:100%;
+	background-color: rgba(0,0,0,0.5);
+	display: none;
+}
+.modal-overlay{
+	background-color:#fff;
+	width:50%;
+	height:50%;
+	margin:auto;
+	margin-top:100px;
+}
+.modal-header{
+	text-align:center;
+	padding:20px;
+	border-bottom:1px dashed rgb(220,220,220)
+}
+.modal-content{
+	text-align:center;
+	padding:20px;
+}
+.modal-content form{
+	
 }

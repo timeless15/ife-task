@@ -12,19 +12,11 @@
 	</header>
 	<div class="side">
 		<div class="side-item">
-			<h2>所有任务 (<span>11</span>)</h2>
-			<h2>分类列表</h2>
+			<div class="item-head">
+				<h2>所有任务 (<span class="allTask"></span>)</h2>
+			</div>		
 			<ul class="item-ul">
-				<li>百度IFE项目 (<span>10</span>)
-					<ul class="subitem-ul">
-						<li>task1 (<span>6</span>)</li>
-						<li>task2 (<span>4</span>)</li>
-					</ul>
-				</li>
-				<li>毕业设计 (<span>1</span>)</li>
-				<li>社团活动 (<span>0</span>)</li>
-				<li>家庭生活 (<span>0</span>)</li>
-				<li>默认分类 (<span>0</span>)</li>
+				<h2>分类列表</h2>
 			</ul>
 			<div class="add add-item">
 				<a href="#">新增分类</a>
@@ -40,27 +32,7 @@
 			</div>
 			<div class="task-content">
 				<ul class="task-list">
-					<li>
-						<span class="task-time">2015-04-28</span>
-						<ul class="task-time-list">
-							<li>TO-DO 1</li>
-							<li>TO-DO 2</li>
-						</ul>
-					</li>
-					<li>
-						<span class="task-time">2015-04-29</span>
-						<ul class="task-time-list">
-							<li>TO-DO 3</li>
-							<li>TO-DO 4</li>
-						</ul>
-					</li>
-					<li>
-						<span class="task-time">2015-04-30</span>
-						<ul class="task-time-list">
-							<li>TO-DO 5</li>
-							<li>TO-DO 6</li>
-						</ul>
-					</li>
+					
 				</ul>
 			</div>
 			<div class="add add-task">
@@ -69,18 +41,48 @@
 		</div>
 	</div>
 	<div class="main">
-		<div class="content-title">
-			<span>To-Do 6</span>
+		<div class="show-content">
+			<div class="content-title"></div>
+			<div class="content-date"></div>
+			<div class="content-text"></div>
 		</div>
-		<div class="content-time">
-			<span>任务日期:</span>
-			<span>2015-04-30</span>
-		</div>
-		<div class="content-text">
-			<p>完成task3的编码工作</p>
-		</div>
+		<div class="add-content">
+			<div class="content-title">
+				<input type="text" class="in-taskname" value="输入标题"/>
+			</div>
+			<div class="content-date">
+				<label>任务日期:</label>
+				<input type="date" class="in-taskdate"/>
+			</div>
+			<div class="content-text">
+				<textarea class="in-tasktext" placeholder="请输入任务内容"></textarea>
+			</div>
+			<div class="content-button">
+				<button class="save-task">保存</button>
+				<button class="cancel-task">取消</button>
+			</div>
+		</div>	
 	</div>
 </main>
+<div class="modal">
+	<div class="modal-overlay">
+		<div class="modal-header">
+			<h2>新增分类</h2>
+		</div>
+		<div class="modal-content">
+			<form>
+				<label>选择主分类</label>
+				<select class="select-item">
+					
+				</select><br>
+				<label>新增分类名字</label>
+				<input type="text" name="item" class="in-itemname"/><br>
+				<button class="confirm-item">确认</button>
+				<button class="cancel-item">取消</button>
+			</form>
+		</div>
+	</div>
+</div>
 </body>
 <script src="js/util.js"></script>
 <script src="js/task0003.js"></script>
