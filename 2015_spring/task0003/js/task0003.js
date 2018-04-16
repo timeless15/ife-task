@@ -80,13 +80,18 @@ var modal = $(".modal");
 function initial(){
 	allTask.innerHTML = taskJson.length;
 	for(var i=0,len=itemJson.length;i<len;i++){
-		renderItem(i);
+		renderItem(itemJson[i].id);
 	}
+
 	var defaultItemChild = itemJson[0].child;
 	for(var j=0,len=defaultItemChild.length;j<len;j++){
 		renderTask(querySubitemById(defaultItemChild[j]));
 	}
-	renderContent(defaultItemChild[0])
+	renderContent(defaultItemChild[0]);
+	//默认分类不能删除
+	var btns = document.getElementsByClassName("deleteBtn");
+	btns[0].parentNode.removeChild(btns[0]);
+	btns[0].parentNode.removeChild(btns[0]);//删掉后btns更新
 }
 /*render function*/
 //渲染主分类
@@ -96,7 +101,7 @@ function renderItem(itemID){
 	var subItemUl = document.createElement("ul");
 	itemLi.setAttribute("itemid",itemID);
 	addClass(itemLi,"item-li");
-	itemLi.innerHTML = "<div class='item-wrap' onclick=itemClick(this)> <span class='itemName'>" + item.name + "</span> <span class='itemNum'></span> </div>";
+	itemLi.innerHTML = "<div class='item-wrap' onclick=itemClick(this)> <span class='itemName'>" + item.name + "</span> <span class='itemNum'></span><button class='deleteBtn'></button></div>";
 	itemUl.appendChild(itemLi);
 	itemLi.appendChild(subItemUl);
 	addClass(subItemUl,'subitem-ul');
@@ -115,7 +120,7 @@ function renderSubitem(subitemID){
 	subitemUl.appendChild(subitemLi);
 	subitemLi.setAttribute("subitemid",subitemID);
 	addClass(subitemLi,"subitem-li");
-	subitemLi.innerHTML = "<div class='subitem-wrap' onclick=subitemClick(this)> <span class='subItemName'>" + subitem.name + "</span><span class='subItemNum'> ("+ subitem.child.length + ")</span><div>";
+	subitemLi.innerHTML = "<div class='subitem-wrap' onclick=subitemClick(this)><span class='subItemName'>" + subitem.name + "</span><span class='subItemNum'> ("+ subitem.child.length + ")</span><button class='deleteBtn'></button></div>";
 }
 //渲染task
 function renderTask(subitem){
@@ -126,6 +131,14 @@ function renderTask(subitem){
 		itemLi.innerHTML = "<div class='task-wrap'><span class='task-time'>" + task.date + "</span><span class='task-name' onclick=taskClick(this) taskid=" + taskArr[i] + ">" + task.name + "</span></div>";
 		taskList.appendChild(itemLi);
 	}
+}
+//渲染所有的task，
+function renderTaskAll(){
+	taskList.innerHTML = "";
+	for(var i=0,len=subItemJson.length;i<len;i++){
+		renderTask(subItemJson[i]);
+	}
+	renderContent(taskJson[0].id);
 }
 //渲染某一个task的content
 function renderContent(taskID){
@@ -233,11 +246,7 @@ function taskClick(e){
 }
 
 $(".item-head").addEventListener("click",function(e){
-	taskList.innerHTML = "";
-	for(var i=0,len=subItemJson.length;i<len;i++){
-		renderTask(subItemJson[i]);
-	}
-	renderContent(taskJson[0]);
+	renderTaskAll();
 	removeClass(getSelectItem(),"select")
 	addClass(this,"active");
 });
@@ -254,7 +263,7 @@ $(".confirm-item").addEventListener("click",function(e){
 	var inputValue = $("input.in-itemname").value;
 	if(selectedID == -1){ //增加主分类
 		var itemAdd = {
-			"id":itemJson.length,
+			"id":itemJson[itemJson.length-1].id+1,
 			"name":inputValue,
 			"child":[]
 		};
@@ -262,7 +271,7 @@ $(".confirm-item").addEventListener("click",function(e){
 		renderItem(itemAdd.id);
 	}else{//增加subitem
 		var subitemAdd = {
-			"id":subItemJson.length,
+			"id":subItemJson[subItemJson.length-1].id+1,
 			"pid":selectedID,
 			"name":inputValue,
 			"child":[]
@@ -299,7 +308,7 @@ $(".save-task").addEventListener("click",function(e){
 		subitemID = item.child[0];
 	}
 	var taskAdd = {
-		"id":taskJson.length,
+		"id":taskJson[taskJson.length-1].id+1,
 		"pid": subitemID,
 		"finish":false,
 		"name":$("input.in-taskname").value,
@@ -335,6 +344,50 @@ $(".cancel-task").addEventListener("click",function(e){
 	$("input.in-taskdate").value="";
 	$("textarea.in-tasktext").value="";
 });
+
+/*delete function*/
+eventDelegate(itemUl,"button","click",function(e){
+	var r = confirm("确定删除该分类吗？");
+	if(r == true){
+		var deleteItem = e.target.parentNode.parentNode;
+		if(hasClass(deleteItem,"subitem-li")){
+			var subitemID = parseInt(deleteItem.getAttribute("subitemid"));
+			var subitem = querySubitemById(subitemID);
+			var itemID = subitem.pid
+			var childs = queryItemById(itemID).child;
+			var subchilds = subitem.child;
+			//更新数据库
+			for(var i=0,len=subchilds.length;i<len;i++){
+				arrayDelete(subchilds[i],taskJson);
+			}//删除task
+			childs.splice(childs.indexOf(subitemID),1);//删除父item的child
+			arrayDelete(subitemID,subItemJson);
+			updateItemNum(itemID);
+		}
+		if(hasClass(deleteItem,"item-li")){
+			var itemID = parseInt(deleteItem.getAttribute("itemid"));
+			var item = queryItemById(itemID);
+			var childs = item.child //subitem
+			//更新数据库
+			for(var i=0,len=childs.length;i<len;i++){
+				var subitem = querySubitemById(childs[i]);
+				var subchilds = subitem.child;
+				for(var j=0,len=subchilds.length;i<len;i++){
+					arrayDelete(subchilds[j],taskJson);
+				}
+				arrayDelete(subitem.id,subItemJson);
+			}
+			arrayDelete(itemID,itemJson);
+			
+		}
+		deleteItem.parentNode.removeChild(deleteItem);
+		allTask.innerHTML = taskJson.length;
+		renderTaskAll();
+	}
+})
+
+/*edit or finish*/
+
 initial();
 
 //Common Function
@@ -379,9 +432,19 @@ function queryTaskById(taskID){
 function queryTaskDOMById(taskID){
 	var taskSpans = taskList.getElementsByClassName("task-name");
 	for(var i=0,len=taskSpans.length;i<len;i++){
-		if(parseInt(taskSpans.getAttribute("taskid")) === taskID){
+		if(parseInt(taskSpans[i].getAttribute("taskid")) === taskID){
 			return taskSpans[i];
 		}
 	}
 }
-//TODO finish-filter,sortByDate,delete,check for edit or finish,cookie
+function arrayDelete(id,array){
+	var index = 0;
+	for(var i=0,len=array.length;i<len;i++){
+		if(array[i].id === id) {
+			index = i;
+			break;
+		}
+	}
+	return array.splice(index,1);
+}
+//TODO:delete*,check for edit or finish,finish-filter,cookie,sortByDate,

@@ -3,6 +3,7 @@
 	padding:0;
 	margin:0;
 	color:rgb(90,90,90);
+	font-family: "Arial";
 }
 li{
 	list-style: none;
@@ -82,19 +83,42 @@ main{
 	padding: 5px 0px 5px 50px;
 	cursor:pointer;
 	background: url(../img/file.png) no-repeat 25px center;
+	position: relative;
 }
 .side-item .item-ul .select .item-wrap,
 .side-item .item-ul .item-wrap:hover {
     background: url(../img/file.png) no-repeat 25px center #fff;
 }
-.side-item .subitem-ul li {
+.side-item .subitem-ul .subitem-wrap {
 	cursor:pointer;
 	padding:5px 0px 5px 70px;
-    background: url(../img/subfile.png) no-repeat 45px center;
+	background: url(../img/subfile.png) no-repeat 45px center;
+	position: relative;
 }
 .side-item .subitem-ul .select,
-.side-item .subitem-ul li:hover{
+.side-item .subitem-ul .subitem-wrap:hover{
 	background: url(../img/subfile.png) no-repeat 45px center #fff;
+}
+
+.side-item .deleteBtn {
+    position:  absolute;
+    border: none;
+    width: 18px;
+    height: 18px;
+    right: 15px;
+    bottom: 5px;
+    background:url(../img/delete.png) no-repeat;
+    display:none;
+    cursor:pointer;
+}
+.side-item .deleteBtn:focus{
+	border:none;
+	outline:none;
+}
+/*hover显示*/
+.side-item .item-ul .item-wrap:hover>.deleteBtn,
+.side-item .subitem-ul .subitem-wrap:hover>.deleteBtn{
+	display:inline;
 }
 .add {
 	position: absolute;
