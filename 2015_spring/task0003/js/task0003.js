@@ -1,75 +1,83 @@
 
 /*database*/
-var itemJson = [{
-    "id":0,
-    "name":"默认分类",
-    "child":[0]
-},{
-    "id": 1,
-    "name": "工作",
-    "child": [1, 2]
-},{
-    "id": 2,
-    "name": "生活",
-    "child": [3]
-}];
-var subItemJson = [{
-    "id":0,
-    "pid":0,
-    "name":"默认子分类",
-    "child":[0]
-},{
-    "id": 1,
-    "pid": 1,
-    "name": "前端",
-    "child": [1,2,3]
-},{
-    "id": 2,
-    "pid": 1,
-    "name": "服务端",
-    "child": [4]
-},{
-    "id": 3,
-    "pid": 2,
-    "name": "吃饭",
-    "child": [],
-}];
-var taskJson = [{
-    "id":0,
-    "pid":0,
-    "finish":false,
-    "name": "Task",
-    "date":"2015-06-05",
-    "text":"This is a task"
-},{
-    "id":1,
-    "pid":1,
-    "finish":true,
-    "name": "IFE",
-    "date": "2015-05-10",
-    "text": "百度ife任务1",
-},{
-    "id": 2,
-    "pid": 1,
-    "finish": false,
-    "name": "drools",
-    "date": "2015-05-31",
-    "text": "研究drools推理引擎",
-},{
-    "id": 3,
-    "pid": 1,
-    "finish": true,
-    "name": "Sass",
-    "date": "2015-06-31",
-    "text": "学习慕课网的视频Sass", 
-},{
-    "id": 4,
-    "pid": 2,
-    "finish": false,
-    "name":  "AMD",
-    "date": "2015-07-31",
-    "text": "学习AMD",        
-}];
+function initDataBase(){
+	if(!localStorage.item || !localStorage.subitem || !localStorage.task){
+		var itemJson = [{
+		    "id":0,
+		    "name":"默认分类",
+		    "child":[0]
+		},{
+		    "id": 1,
+		    "name": "工作",
+		    "child": [1, 2]
+		},{
+		    "id": 2,
+		    "name": "生活",
+		    "child": [3]
+		}];
+		var subItemJson = [{
+		    "id":0,
+		    "pid":0,
+		    "name":"默认子分类",
+		    "child":[0]
+		},{
+		    "id": 1,
+		    "pid": 1,
+		    "name": "前端",
+		    "child": [1,2,3]
+		},{
+		    "id": 2,
+		    "pid": 1,
+		    "name": "服务端",
+		    "child": [4]
+		},{
+		    "id": 3,
+		    "pid": 2,
+		    "name": "吃饭",
+		    "child": [],
+		}];
+		var taskJson = [{
+		    "id":0,
+		    "pid":0,
+		    "finish":false,
+		    "name": "Task",
+		    "date":"2015-06-05",
+		    "text":"This is a task"
+		},{
+		    "id":1,
+		    "pid":1,
+		    "finish":true,
+		    "name": "IFE",
+		    "date": "2015-05-10",
+		    "text": "百度ife任务1",
+		},{
+		    "id": 2,
+		    "pid": 1,
+		    "finish": false,
+		    "name": "drools",
+		    "date": "2015-05-31",
+		    "text": "研究drools推理引擎",
+		},{
+		    "id": 3,
+		    "pid": 1,
+		    "finish": true,
+		    "name": "Sass",
+		    "date": "2015-06-31",
+		    "text": "学习慕课网的视频Sass", 
+		},{
+		    "id": 4,
+		    "pid": 2,
+		    "finish": false,
+		    "name":  "AMD",
+		    "date": "2015-07-31",
+		    "text": "学习AMD",        
+		}];
+	localStorage.item = JSON.stringify(itemJson);
+	localStorage.subitem = JSON.stringify(subItemJson);
+	localStorage.task = JSON.stringify(taskJson);
+	}
+}
+
 
 //新增item/subitem->后台数据库更新->
 //新增task->后台数据库更新->
@@ -82,20 +90,23 @@ var currentItemID = 0;
 var currentSubitemID = 0;
 var currentTaskID = 0;
 var showTaskId = [];
+var itemJson = JSON.parse(localStorage.item);
+var subItemJson = JSON.parse(localStorage.subitem);
+var taskJson = JSON.parse(localStorage.task);
 function initial(){
+	initDataBase();
     allTask.innerHTML = taskJson.length;
     for(var i=0,len=itemJson.length;i<len;i++){
         renderItem(itemJson[i].id);
     }
-    showTaskId = subItemJson[0].child;
-    renderTask();
+    renderTaskAll();
     renderContent(taskJson[0].id);
     //默认分类不能删除
     var btns = document.getElementsByClassName("deleteBtn");
     btns[0].parentNode.removeChild(btns[0]);
     btns[0].parentNode.removeChild(btns[0]);//删掉后btns更新
-    document.cookie = "username=John Doe";
 }
+initial();
 /*render function*/
 //渲染主分类
 function renderItem(itemID){
@@ -146,6 +157,8 @@ function renderTaskAll(){
         showTaskId.push(taskJson[i].id);
     }
     renderTask();
+    var task0Span = queryTaskDOMById(showTaskId[0]);
+    addClass(task0Span,"select");
     renderContent(taskJson[0].id);
 }
 //渲染某一个task的content
@@ -252,7 +265,10 @@ function itemClick(e){
     }
     renderTask();
     //显示第一个子分类第一个task的内容
-    renderContent(querySubitemById(childArr[0]).child[0]);
+    var task0ID = querySubitemById(childArr[0]).child[0];
+    var task0Span = queryTaskDOMById(task0ID);
+    addClass(task0Span,"select");
+    renderContent(task0ID);
 
 }
 //subitem点击事件
@@ -262,7 +278,6 @@ function subitemClick(e){
     removeClass(current,"select");
     addClass(clickSubitem,"select");
     if(hasClass($(".item-head"),"active")) removeClass($(".item-head"),"active");
-
     var subitemID = parseInt(clickSubitem.getAttribute("subitemid"));
     var subitem = querySubitemById(subitemID);
     taskList.innerHTML = "";
@@ -272,8 +287,12 @@ function subitemClick(e){
     }
     renderTask();
     //显示第一个task的内容
-    renderContent(subitem.child[0]);
+    var task0ID = subitem.child[0];
+    var task0Span = queryTaskDOMById(task0ID);
+    addClass(task0Span,"select");
+    renderContent(task0ID);
 }
+
 function taskClick(e){
     var current = getSelectTask();
     removeClass(current,"select");
@@ -318,6 +337,8 @@ $(".confirm-item").addEventListener("click",function(e){
         parentItem.child.push(subitemAdd.id);
         renderSubitem(subitemAdd.id);
     }
+    localStorage.item = JSON.stringify(itemJson);
+	localStorage.subitem = JSON.stringify(subItemJson);
     modal.style.display = "none";
 });
 
@@ -378,6 +399,9 @@ $(".save-task").addEventListener("click",function(e){
     $("input.in-taskname").value="";
     $("input.in-taskdate").value="";
     $("textarea.in-tasktext").value="";
+    localStorage.item = JSON.stringify(itemJson);
+	localStorage.subitem = JSON.stringify(subItemJson);
+	localStorage.task = JSON.stringify(taskJson);
 });
 
 $(".cancel-task").addEventListener("click",function(e){
@@ -427,6 +451,9 @@ eventDelegate(itemUl,"button","click",function(e){
         deleteItem.parentNode.removeChild(deleteItem);
         allTask.innerHTML = taskJson.length;
         renderTaskAll();
+        localStorage.item = JSON.stringify(itemJson);
+		localStorage.subitem = JSON.stringify(subItemJson);
+		localStorage.task = JSON.stringify(taskJson);
     }
 })
 
@@ -453,6 +480,7 @@ eventDelegate($(".show-content"),"button","click",function(e){
             renderContent(taskid);
         } 
     };
+	localStorage.task = JSON.stringify(taskJson);
 })
 function getSelectFilter(){
     var filterLi = $(".task-filter").getElementsByTagName("li");
@@ -497,7 +525,6 @@ function taskFilter(currentTaskList,tag){
     if(tag=="finish") return finishArr;
     if(tag=="unfinish") return unfinishArr;
 }
-initial();
 
 //Common Function
 function queryItemById(itemID){
@@ -556,4 +583,4 @@ function arrayDelete(id,array){
     }
     return array.splice(index,1);
 }
-//TODO:delete*,check for edit or finish*,finish-filter*,cookie,sortByDate,
+//TODO:delete*,check for edit or finish*,finish-filter*,localStorage*,sortByDate,
