@@ -25,14 +25,13 @@
 		<div class="side-task">
 			<div class="task-filter">
 				<ul>
-					<li class="selected">所有</li>
-					<li>未完成</li>
-					<li>已完成</li>
+					<li class="select all">所有</li>
+					<li class="finish">已完成</li>
+					<li class="unfinish">未完成</li>
 				</ul>
 			</div>
 			<div class="task-content">
 				<ul class="task-list">
-					
 				</ul>
 			</div>
 			<div class="add add-task">
@@ -45,8 +44,13 @@
 			<div class="content-title"></div>
 			<div class="content-date"></div>
 			<div class="content-text"></div>
+			<div class="content-manipulate">
+				<button class="content-edit"></button>
+				<button class="content-finish"><button>
+			</div>
+
 		</div>
-		<div class="add-content">
+		<div class="add-content" edit="false">
 			<div class="content-title">
 				<input type="text" class="in-taskname" value="输入标题"/>
 			</div>
