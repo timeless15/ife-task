@@ -11,6 +11,13 @@ li{
 a{
 	text-decoration: none;
 }
+button{
+	border: none;
+	cursor: pointer;
+}
+button:focus{
+	outline:none;
+}
 body {
     height: 100%;
 }
@@ -101,20 +108,15 @@ main{
 }
 
 .side-item .deleteBtn {
-    position:  absolute;
-    border: none;
+    position: absolute;
     width: 18px;
     height: 18px;
     right: 15px;
     bottom: 5px;
     background:url(../img/delete.png) no-repeat;
     display:none;
-    cursor:pointer;
 }
-.side-item .deleteBtn:focus{
-	border:none;
-	outline:none;
-}
+
 /*hover显示*/
 .side-item .item-ul .item-wrap:hover>.deleteBtn,
 .side-item .subitem-ul .subitem-wrap:hover>.deleteBtn{
@@ -154,7 +156,7 @@ main{
 	font-size: 15px;
 	cursor:pointer;
 }
-.side-task .task-filter li.selected,
+.side-task .task-filter li.select ,
 .side-task .task-filter li:hover{
 	background-color:#fff;
 	border:1px solid rgb(205,205,205);
@@ -175,6 +177,9 @@ main{
 	padding:5px 0 5px 25px;
 	display:block;
 	font-size:14px;
+}
+.side-task .task-content .task-list .finish{
+	color:green;
 }
 .side-task .task-content .task-list .select,
 .side-task .task-content .task-list .task-name:hover{
@@ -207,7 +212,27 @@ main{
 	bottom:20px;
 	right:10px;
 }
-
+.main .show-content {
+  position: relative;
+}
+.main .content-manipulate {
+  position: absolute;
+  top: 12px;
+  right: 30px;
+  display: none;
+}
+.main .content-edit {
+  width: 35px;
+  height: 35px;
+  background: url(../img/edit.png) no-repeat;
+  margin-right: 15px;
+}
+.main .content-finish {
+  width: 35px;
+  height: 35px;
+  background: url(../img/finish.png) no-repeat;
+  margin-right: 15px;
+}
 /*modal*/
 .modal{
 	position: absolute;
