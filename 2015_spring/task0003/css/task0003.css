@@ -11,10 +11,15 @@ li{
 a{
 	text-decoration: none;
 }
-button{
-	border: none;
-	cursor: pointer;
+button {
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+    margin-right: 5px;
+    background-color: rgb(220,220,220);
 }
+input:focus,
+textarea:focus,
 button:focus{
 	outline:none;
 }
@@ -161,13 +166,6 @@ main{
 	background-color:#fff;
 	border:1px solid rgb(205,205,205);
 }
-.side-task .task-content ul.task-list{
-	
-}
-.side-task .task-content ul.task-list>li{
-	
-	
-}
 .side-task .task-content .task-list .task-time{
 	display:block;
 	background-color:rgb(247,251,234);
@@ -186,6 +184,7 @@ main{
 	background-color:rgb(220,220,220);
 	cursor:pointer;
 }
+
 
 /*main*/
 .main .add-content{
@@ -233,6 +232,21 @@ main{
   background: url(../img/finish.png) no-repeat;
   margin-right: 15px;
 }
+.main input {
+    width: 100%;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+}
+.main textarea {
+    border: none;
+    width:  100%;
+    height: 100%;
+    padding: 10px;
+    resize:  none;
+    font-size: 16px;
+    min-height: 600px;
+}
 /*modal*/
 .modal{
 	position: absolute;
@@ -259,6 +273,6 @@ main{
 	text-align:center;
 	padding:20px;
 }
-.modal-content form{
-	
+.modal-content div{
+	margin-bottom:10px;
 }
