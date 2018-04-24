@@ -237,7 +237,7 @@ var handlers = {
 		var itemID = parseInt(itemLi.getAttribute("itemid")),
 			clickItem = item.query(itemID);
 		clickItem.click();
-		removeClass(document.querySelectorAll(".item-ul .select")[0],"select");
+		removeClass(document.querySelector(".item-ul .select"),"select");
 		addClass(itemLi,"select");
 	},
 	subitemClick:function(target){
@@ -246,7 +246,7 @@ var handlers = {
 		var subitemID = parseInt(subitemLi.getAttribute("subitemid")),
 			clickSubitem = subitem.query(subitemID);
 		clickSubitem.click();
-		removeClass(document.querySelectorAll(".item-ul .select")[0],"select");
+		removeClass(document.querySelector(".item-ul .select"),"select");
 		addClass(subitemLi,"select");
 	},
 	taskClick:function(target){
