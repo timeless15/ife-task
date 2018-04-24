@@ -11,12 +11,12 @@ function Subitem(id,pid,name,child){
 }
 //Subitem.prototype = Object.create(Item.prototype);
 //Subitem.prototype.constructor = Subitem;
-function Task(id,pid,finish,name,time,text){
+function Task(id,pid,finish,name,date,text){
 	this.id = id;
 	this.pid = pid;
 	this.finish = finish;
 	this.name = name;
-	this.time = time;
+	this.date = date;
 	this.text = text;
 }
 //add,delete,show
@@ -24,7 +24,7 @@ Item.prototype.show = function(){
 	var itemLi = document.createElement("li");
 	addClass(itemLi,"item-li");
 	itemLi.setAttribute("itemid",this.id);
-	itemLi.innerHTML = "<div class='item-wrap'><span class='itemName'>" + this.name + "</span><span class='itemNum'> (" + this.count() +")</span></div><ul class='subitem-ul' pid=" + this.id + "></ul>";
+	itemLi.innerHTML = "<div class='item-wrap' onclick='handlers.itemClick(this)'><span class='itemName'>" + this.name + "</span><span class='itemNum'> (" + this.count() +")</span><button class='deleteBtn'></button></div><ul class='subitem-ul' pid=" + this.id + "></ul>";
 	$(".item-ul").appendChild(itemLi);
 }
 Item.prototype.dom = function(){ // return li
@@ -44,24 +44,29 @@ Item.prototype.count = function(){
 	return result;
 }
 Item.prototype.delete = function(){
-	//database update
-	arrayDelete(this.id,item.data);
+	//database update parent,self,child
 	var subitemIdArr = this.child;
 	for(var i=0,len=subitemIdArr.length;i<len;i++){
 		var delSubitem = subitem.query(subitemIdArr[i]);
 		delSubitem.delete();
 	}
+	arrayDelete(this.id,item.data);
 	//dom update
 	var itemLi = this.dom();
 	itemLi.parentNode.removeChild(itemLi);
 	delete this;
+}
+Item.prototype.click = function(){
+	for(var i=0,len=this.child.length;i<len;i++){
+		subitem.query(this.child[i]).click();
+	}
 }
 Subitem.prototype.show = function(){
 	var subitemUl = item.query(this.pid).dom().childNodes[1];
 	var subitemLi = document.createElement("li");
 	addClass(subitemLi,"subitem-li");
 	subitemLi.setAttribute("subitemid",this.id);
-	subitemLi.innerHTML = "<div class='subitem-wrap'><span class='subitemName'>" + this.name + "</span><span class='subitemNum'> (" + this.count() +")</span></div>";
+	subitemLi.innerHTML = "<div class='subitem-wrap' onclick='handlers.subitemClick(this)'><span class='subitemName'>" + this.name + "</span><span class='subitemNum'> (" + this.count() +")</span><button class='deleteBtn'></button></div>";
 	subitemUl.appendChild(subitemLi);
 }
 Subitem.prototype.dom = function(){ // return li
@@ -77,27 +82,52 @@ Subitem.prototype.count = function(){
 }
 Subitem.prototype.delete = function(){
 	//database update
-	arrayDelete(this.pid)
-	arrayDelete(this.id,subitem.data);
+	var parentArr = item.query(this.pid).child;
+	parentArr.splice(parentArr.indexOf(this.id),1);
 	var taskIdArr = this.child;
 	for(var i=0,len=taskIdArr.length;i<len;i++){
 		var delTask = task.query(taskIdArr[i]);
 		delTask.delete();
 	}
+	arrayDelete(this.id,subitem.data);
 	//dom update
 	var subitemLi = this.dom();
 	subitemLi.parentNode.removeChild(subitemLi);
 	delete this;
 }
+Subitem.prototype.click = function(){
+	for(var i=0,len=this.child.length;i<len;i++){
+		task.query(this.child[i]).show();
+	}
+}
+
+Task.prototype.show = function(){
+	var taskLi = document.createElement("li");
+	taskLi.innerHTML = "<div class='task-wrap'><span class='task-time'>" + this.date + "</span><span class='task-name' onclick='handlers.taskClick(this)' taskid=" + this.id + ">" + this.name + "</span></div>";
+	if(this.finish == true){
+        taskLi.getElementsByClassName("task-name")[0].className += " finish";
+    }
+	$(".task-list").appendChild(taskLi);
+}
 Task.prototype.delete = function(){
 	//database
-	var parentSubitem = subitem.query(this.pid);
-	//TODO
+	var parentArr = subitem.query(this.pid).child;
+	parentArr.splice(parentArr.indexOf(this.id),1);
 	arrayDelete(this.id,task.data);
 
 	delete this;
 }
-
+Task.prototype.click = function(){
+	$(".show-content").setAttribute("taskid",this.id);
+    $(".content-title").innerHTML = this.name;
+    $(".content-date").innerHTML = "任务日期: " + this.date;
+    $(".content-text").innerHTML = this.text;
+    if(this.finish === true){
+        $(".content-manipulate").style.display = "none";
+    }else {
+        $(".content-manipulate").style.display = "block";
+    }
+}
 /*global variable*/
 var item = {
 	data:[],
@@ -148,8 +178,12 @@ var subitem = {
 };
 var task = {
 	data:[],
-	add:function(id,pid,finish,name,time,text){
-		this.data.push(new Task(id,pid,finish,name,time,text));
+	add:function(id,pid,finish,name,date,text){
+		var addTask = new Task(id,pid,finish,name,date,text);
+		this.data.push(addTask);
+		var parentSubitem = subitem.query(pid);
+		parentSubitem.child.push(id);
+		addTask.show();
 	},
 	query:function(id){
 		var taskData = this.data;
@@ -157,6 +191,13 @@ var task = {
 			if(taskData[i].id === id){
 				return taskData[i];
 			}
+		}
+	},
+	showAll:function(){
+		var taskData = this.data;
+		$(".task-list").innerHTML = '';
+		for(var i=0,len=taskData.length;i<len;i++){
+			taskData[i].show();
 		}
 	}
 };
@@ -189,6 +230,30 @@ var handlers = {
 	cancelItem:function(e){
 		e.preventDefault();
     	$(".modal").style.display = "none";
+	},
+	itemClick:function(target){
+		$(".task-list").innerHTML = '';
+		var itemLi = target.parentNode;
+		var itemID = parseInt(itemLi.getAttribute("itemid")),
+			clickItem = item.query(itemID);
+		clickItem.click();
+		removeClass(document.querySelectorAll(".item-ul .select")[0],"select");
+		addClass(itemLi,"select");
+	},
+	subitemClick:function(target){
+		$(".task-list").innerHTML = '';
+		var subitemLi = target.parentNode;
+		var subitemID = parseInt(subitemLi.getAttribute("subitemid")),
+			clickSubitem = subitem.query(subitemID);
+		clickSubitem.click();
+		removeClass(document.querySelectorAll(".item-ul .select")[0],"select");
+		addClass(subitemLi,"select");
+	},
+	taskClick:function(target){
+		console.log(target);
+		var taskID = parseInt(target.getAttribute("taskid")),	
+			clickTask = task.query(taskID);
+		clickTask.click();
 	}
 
 };
@@ -197,6 +262,8 @@ function initial(){
 	initDataBase();
 	item.showAll();
 	subitem.showAll();
+	task.showAll();
+	task.data[0].click();
 }
 function initDataBase(){
 	item.data.push(new Item(0,'Default',[0]));
@@ -222,6 +289,5 @@ function arrayDelete(id,array){
     }
     return array.splice(index,1);
 }
-function find
 initial();
 
