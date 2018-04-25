@@ -227,9 +227,6 @@ var task = {
 		for(var i=0,len=taskData.length;i<len;i++){
 			taskData[i].show();
 		}
-	},
-	sort:function(){
-		
 	}
 };
 //event handler
@@ -256,6 +253,7 @@ var handlers = {
     		var subitemData = subitem.data;
     		subitem.add(lastOfArray(subitemData).id+1,selectedID,inputValue,[])
     	}
+    	updateStorage();
     	$(".modal").style.display = "none";
 	},
 	cancelItem:function(e){
@@ -263,37 +261,29 @@ var handlers = {
     	$(".modal").style.display = "none";
 	},
 	itemClick:function(target){
-		$(".task-list").innerHTML = '';
 		showTask = [];
 		var itemLi = target.parentNode;
 		var itemID = parseInt(itemLi.getAttribute("itemid")),
 			clickItem = item.query(itemID);
 		clickItem.click();
-		$(".content-title").innerHTML = "任务名称";
-        $(".content-date").innerHTML = "任务日期";
-        $(".content-text").innerHTML = "任务描述";
-		if(clickItem.child.length>0){
-			if(subitem.query(clickItem.child[0]).child.length>0){
-				task.query(subitem.query(clickItem.child[0]).child[0]).click();
-			}
-		}
+
+		showTask.sort(sortDate);
+		handlers.sortDate();
+		
 		removeClass(document.querySelector(".task-filter .select"),"select");
 		addClass($(".task-filter .all"),"select");
 		stopHandler(target);
 	},
 	subitemClick:function(target){
-		$(".task-list").innerHTML = '';
 		showTask = [];
 		var subitemLi = target.parentNode;
 		var subitemID = parseInt(subitemLi.getAttribute("subitemid")),
 			clickSubitem = subitem.query(subitemID);
 		clickSubitem.click();
-		$(".content-title").innerHTML = "任务名称";
-        $(".content-date").innerHTML = "任务日期";
-        $(".content-text").innerHTML = "任务描述";
-		if(clickSubitem.child.length>0){
-			task.query(clickSubitem.child[0]).click();
-		}
+
+		showTask.sort(sortDate);
+		handlers.sortDate();
+
 		removeClass(document.querySelector(".task-filter .select"),"select");
 		addClass($(".task-filter .all"),"select");
 		stopHandler(target);
@@ -322,8 +312,10 @@ var handlers = {
        		taskEdit.text = $("textarea.in-tasktext").value;
        		taskEdit.click();
        		//中间栏更新
-       		taskEdit.dom().innerHTML = taskEdit.name;
-       		taskEdit.dom().previousSibling.innerHTML = taskEdit.date;
+       		taskEdit.dom().parentNode.parentNode.parentNode.removeChild(taskEdit.dom().parentNode.parentNode);
+       		taskEdit.show();
+       		showTask.sort(sortDate);
+       		handlers.sortDate();
 		}else{
 			var selected = document.querySelector(".item-ul .select"),
 			selectedID = 0,
@@ -341,11 +333,16 @@ var handlers = {
 			selectSubitem = subitem.query(selectedID);
 			selectItem = item.query(selectSubitem.pid);
 			task.add(lastOfArray(taskData).id+1,selectedID,false,$("input.in-taskname").value,$("input.in-taskdate").value,$("textarea.in-tasktext").value);
+	    	
 	    	lastOfArray(taskData).click();
+	    	showTask.sort(sortDate);
+	    	handlers.sortDate();
+
 	    	selectSubitem.update();
 	    	selectItem.update();
 	    	handlers.updateAllNum();
 		}
+		updateStorage();
 		$(".show-content").style.display = "block";
 	    $(".add-content").style.display = "none";
 	    $(".add-content").setAttribute("edit","false");
@@ -365,7 +362,8 @@ var handlers = {
 		removeClass(selected,"select");
 		addClass(e.target,"select");
 		task.showAll();
-		task.data[0].click();
+		showTask.sort(sortDate);
+		handlers.sortDate();
 	},
 	delete:function(target){
 		var itemLi = target.parentNode.parentNode;
@@ -385,8 +383,10 @@ var handlers = {
 		handlers.updateAllNum();
 		addClass($(".item-head"),"select");
 		task.showAll();
-		task.data[0].click();
+		showTask.sort(sortDate);
+		handlers.sortDate();
 		stopHandler(target);
+		updateStorage();
 	},
 	edit:function(target){
     	var taskID = parseInt(target.parentNode.parentNode.getAttribute("taskid"));
@@ -397,6 +397,7 @@ var handlers = {
         $("input.in-taskname").value = taskEdit.name;
         $("input.in-taskdate").value = taskEdit.date;
         $("textarea.in-tasktext").value = taskEdit.text;
+        updateStorage();
 	},
 	finish:function(target){
 		var r = confirm("Are you sure to tag it as finished?");
@@ -407,6 +408,7 @@ var handlers = {
     		addClass(taskFinish.dom(),"finish");
     		taskFinish.click();
 		}
+		updateStorage();
 	},
 	finishFilter:function(target){
 		removeClass(document.querySelector(".task-filter .select"),"select");
@@ -444,30 +446,92 @@ var handlers = {
 			}
 			showTask[0].click();
 		}
+	},
+	sortDate:function(){
+		$(".task-list").innerHTML = '';
+		for(var i=0,len=showTask.length;i<len;i++){
+			showTask[i].show();
+		}
+		for(var i=0,len=showTask.length-1;i<len;i++){
+ 			var now = showTask[i].date;
+        	var next= showTask[i+1].date;
+        	if(now==next) {
+        		var taskTimeSpan = showTask[i+1].dom().previousSibling;
+            	taskTimeSpan.parentNode.removeChild(taskTimeSpan);
+        	}
+		}
+		if(showTask.length>0){
+        	showTask[0].click();
+        }else{
+			$(".content-title").innerHTML = "任务名称";
+        	$(".content-date").innerHTML = "任务日期";
+        	$(".content-text").innerHTML = "任务描述";
+        }
 	}
 };
 var showTask = [],showSubItem=0;
+function sortDate(a,b){
+    var c = a.date.split("-");
+    var d = b.date.split("-");
+    if(parseInt(c[0])>parseInt(d[0])) return -1;
+    else if(parseInt(c[0])<parseInt(d[0])) return 1;
+    else if(parseInt(c[1])>parseInt(d[1])) return -1;
+    else if(parseInt(c[1])<parseInt(d[1])) return 1;
+    else if(parseInt(c[2])>parseInt(d[2])) return -1;
+    else if(parseInt(c[2])<parseInt(d[2])) return 1;
+    else return 0;
+}
 function initial(){
 	initDataBase();
 	item.showAll();
 	subitem.showAll();
 	task.showAll();
-	task.data[0].click();
+	showTask.sort(sortDate);
+	handlers.sortDate();
 	handlers.updateAllNum();
 }
 function initDataBase(){
-	item.data.push(new Item(0,'Default',[0]));
-	item.data.push(new Item(1,'Work',[1,2]));
-	item.data.push(new Item(2,'Life',[3]));
-	subitem.data.push(new Subitem(0,0,'Sub Default',[0]));
-	subitem.data.push(new Subitem(1,1,'Front End',[1,2,3]));
-	subitem.data.push(new Subitem(2,1,'Server',[4]));
-	subitem.data.push(new Subitem(3,2,'Food',[]));
-	task.data.push(new Task(0,0,false,'Task','2015-06-05','This is a task'));
-	task.data.push(new Task(1,1,true,'IFE','2015-05-10','百度ife任务1'));
-	task.data.push(new Task(2,1,false,'drools','2015-05-31','研究drools推理引擎'));
-	task.data.push(new Task(3,1,true,'Sass','2015-06-31','学习慕课网的视频Sass'));
-	task.data.push(new Task(4,2,false,'AMD','2015-07-31','学习AMD'));
+	if(!localStorage.item || !localStorage.subitem || !localStorage.task){
+		item.data.push(new Item(0,'Default',[0]));
+		item.data.push(new Item(1,'Work',[1,2]));
+		item.data.push(new Item(2,'Life',[3]));
+		subitem.data.push(new Subitem(0,0,'Sub Default',[0]));
+		subitem.data.push(new Subitem(1,1,'Front End',[1,2,3]));
+		subitem.data.push(new Subitem(2,1,'Server',[4]));
+		subitem.data.push(new Subitem(3,2,'Food',[]));
+		task.data.push(new Task(0,0,false,'Task','2015-06-05','This is a task'));
+		task.data.push(new Task(1,1,true,'IFE','2015-05-10','百度ife任务1'));
+		task.data.push(new Task(2,1,false,'drools','2015-05-31','研究drools推理引擎'));
+		task.data.push(new Task(3,1,true,'Sass','2015-06-31','学习慕课网的视频Sass'));
+		task.data.push(new Task(4,2,false,'AMD','2015-07-31','学习AMD'));
+		updateStorage();
+	}else{
+		var itemData = JSON.parse(localStorage.item);
+    	var subitemData = JSON.parse(localStorage.subitem);
+    	var taskData = JSON.parse(localStorage.task);
+    	for(var i=0,len=itemData.length;i<len;i++){
+    		var temp = itemData[i];
+    		item.data.push(new Item(temp.id,temp.name,temp.child))
+    	}
+    	for(var i=0,len=subitemData.length;i<len;i++){
+    		var temp = subitemData[i];
+    		subitem.data.push(new Subitem(temp.id,temp.pid,temp.name,temp.child))
+    	}
+    	for(var i=0,len=taskData.length;i<len;i++){
+    		var temp = taskData[i];
+    		task.data.push(new Task(temp.id,temp.pid,temp.finish,temp.name,temp.date,temp.text))
+    	}
+	}
+}
+function cancelStorage(){
+	localStorage.removeItem("item");
+	localStorage.removeItem("subitem");
+	localStorage.removeItem("task");
+}
+function updateStorage(){
+	localStorage.item = JSON.stringify(item.data);
+    localStorage.subitem = JSON.stringify(subitem.data);
+    localStorage.task = JSON.stringify(task.data);
 }
 function arrayDelete(id,array){
     var index = 0;
@@ -482,16 +546,7 @@ function arrayDelete(id,array){
 function lastOfArray(array){
 	return array[array.length-1];
 }
-function eventDelegate(element, tag, eventName, listener) {
-    element.addEventListener(eventName,function(e){
-        var event = e || window.event;
-        var target = event.target || event.srcElement;
-        if (target && target.tagName === tag.toUpperCase()) {
-            listener.call(target, event);
-        }
-    })
-}
 function stopHandler(event){
     window.event?window.event.cancelBubble=true:event.stopPropagation();  
-}  
+} 
 initial();
