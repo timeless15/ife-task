@@ -13,7 +13,7 @@
 	<div class="side">
 		<div class="side-item">	
 			<ul class="item-ul">
-				<h2 class="item-head select">所有任务 (<span class="item-all"></span>)</h2>
+				<h2 class="item-head select" onclick="handlers.itemAll(event)">所有任务 (<span class="item-all"></span>)</h2>
 				<h2>分类列表</h2>
 			</ul>
 			<div class="add add-item">
@@ -23,9 +23,9 @@
 		<div class="side-task">
 			<div class="task-filter">
 				<ul>
-					<li class="select all">所有</li>
-					<li class="finish">已完成</li>
-					<li class="unfinish">未完成</li>
+					<li class="select all" onclick="handlers.finishFilter(this)">所有</li>
+					<li class="finish" onclick="handlers.finishFilter(this)">已完成</li>
+					<li class="unfinish" onclick="handlers.finishFilter(this)">未完成</li>
 				</ul>
 			</div>
 			<div class="task-content">
@@ -33,7 +33,7 @@
 				</ul>
 			</div>
 			<div class="add add-task">
-				<a href="#">新增任务</a>
+				<a href="#" onclick="handlers.addTask(event)">新增任务</a>
 			</div>
 		</div>
 	</div>
@@ -43,8 +43,8 @@
 			<div class="content-date"></div>
 			<div class="content-text"></div>
 			<div class="content-manipulate">
-				<button class="content-edit"></button>
-				<button class="content-finish"></button>
+				<button class="content-edit" onclick="handlers.edit(this)"></button>
+				<button class="content-finish" onclick="handlers.finish(this)"></button>
 			</div>
 
 		</div>
@@ -59,8 +59,8 @@
 				<textarea class="in-tasktext" placeholder="请输入任务描述"></textarea>
 			</div>
 			<div class="content-button">
-				<button class="save-task">保存</button>
-				<button class="cancel-task">取消</button>
+				<button class="save-task" onclick="handlers.saveTask(event)">保存</button>
+				<button class="cancel-task" onclick="handlers.cancelTask(event)">取消</button>
 			</div>
 		</div>	
 	</div>
