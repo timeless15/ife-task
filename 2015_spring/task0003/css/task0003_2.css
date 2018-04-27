@@ -25,52 +25,45 @@ button:focus{
 }
 body {
     height: 100%;
+    width:  100%;
 }
 html {
     height: 100%;
 }
 header {
-    padding: 20px 10px;
+    padding: 10px 0;
     background-color: rgb(220,220,220);
     width:100%;
     border-bottom: 1px solid rgb(205,205,205);
-    height: 12%;
+    height: 10%;
+    position:  relative;
 }
 header h1{
 	color:rgb(150,150,150);
 	font-weight:bold;
+	padding: 20px 30px;
+}
+button.return{
+	display:none;
 }
 main{
 	width:100%;
 	height: 100%;
-	overflow:  hidden;
 }
-
-.main {
-    margin-left: 460px;
-    height: 100%;
+.main{
+	height: 90%;
 }
-.side {
-    height: 88%;
-    float: left;
-    width: 460px;
-}
-
 .side-item {
-    height: 100%;
-    width: 50%;
-    float: left;
-    border-right: 1px solid rgb(205,205,205);
-    background-color: rgb(240,240,240);
-    padding: 25px 0px;
-    position: relative;
+	height: 90%;
+	border-right: 1px solid rgb(205,205,205);
+	background-color: rgb(240,240,240);
+	padding: 25px 0px;
+	position: relative;
 }
 .side-task {
-    height: 100%;
-    width:  50%;
-    float: right;
-    border-right: 1px solid rgb(205,205,205);
-    position:relative;
+	height: 90%;
+	border-right: 1px solid rgb(205,205,205);
+	position:relative;
 }
 .side-item .item-head{
 	cursor:  pointer;
@@ -274,4 +267,51 @@ main{
 }
 .modal-content div{
 	margin-bottom:10px;
+}
+
+/*responsive*/
+@media (min-width:768px){
+	.main {
+    	margin-left: 460px;
+	}
+	main{
+		min-width: 1024px;
+		min-height: 768px;
+	}
+	.side-item {
+		width: 230px;
+		float: left;
+	}
+	.side-task{
+		width: 230px;
+		float: left;
+	}   
+}
+
+@media (max-width:768px){
+	main{
+		width:100%;
+	}
+	.main{
+		display:  none;
+	}
+	.side-item{
+		width:100%;
+		/* display:none; */
+	}
+	.side-task{
+		width:100%;
+		display:none;
+	}
+	header h1{
+		text-align:center;
+		padding: 0px;
+	}
+	button.return{
+		display:initial;
+		position:  absolute;
+		bottom: 0px;
+		left: 15px;
+		font-size: 16px;
+	}
 }
