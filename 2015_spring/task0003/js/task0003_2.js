@@ -230,7 +230,7 @@ var task = {
 	}
 };
 //event handler
-var handlers = {
+var itemAdd = {
 	addItem:function(e){
 		e.preventDefault();
 		var itemData = item.data,
@@ -253,13 +253,22 @@ var handlers = {
     		var subitemData = subitem.data;
     		subitem.add(lastOfArray(subitemData).id+1,selectedID,inputValue,[])
     	}
+		removeClass(document.querySelector(".item-ul .select"),"select");
+		
+
     	updateStorage();
     	$(".modal").style.display = "none";
 	},
 	cancelItem:function(e){
 		e.preventDefault();
     	$(".modal").style.display = "none";
-	},
+	}
+}
+var taskAdd = {
+
+}                                                                                                                                                                                                                                                                                                                                                                                                                        
+var handlers = {
+	
 	itemClick:function(target){
 		showTask = [];
 		var itemLi = target.parentNode;
@@ -272,6 +281,9 @@ var handlers = {
 		
 		removeClass(document.querySelector(".task-filter .select"),"select");
 		addClass($(".task-filter .all"),"select");
+
+		//$(".side-item").style.display = "none";
+		//$(".side-task").style.display = "block";
 		stopHandler(target);
 	},
 	subitemClick:function(target){
@@ -286,6 +298,9 @@ var handlers = {
 
 		removeClass(document.querySelector(".task-filter .select"),"select");
 		addClass($(".task-filter .all"),"select");
+
+		//$(".side-item").style.display = "none";
+		//$(".side-task").style.display = "block";
 		stopHandler(target);
 	},
 	taskClick:function(target){
@@ -467,6 +482,10 @@ var handlers = {
         	$(".content-date").innerHTML = "任务日期";
         	$(".content-text").innerHTML = "任务描述";
         }
+	},
+	return:function(){
+		//$(".side-task").style.display = "none";
+		//$(".side-item").style.display = "block";
 	}
 };
 var showTask = [],showSubItem=0;
