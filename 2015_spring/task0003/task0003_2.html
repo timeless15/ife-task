@@ -3,38 +3,38 @@
 <head>
 	<title>Task Manage System</title>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="css/task0003_2.css">
 </head>
 <body>
 <main>
 	<header>
 		<h1>GTD Tools</h1>
+		<button class="return" onclick = "handlers.return(event)"> < return </button>
 	</header>
-	<div class="side">
-		<div class="side-item">	
-			<ul class="item-ul">
-				<h2 class="item-head select" onclick="handlers.itemAll(event)">所有任务 (<span class="item-all"></span>)</h2>
-				<h2>分类列表</h2>
-			</ul>
-			<div class="add add-item">
-				<a href="#" onclick = "handlers.addItem(event)">新增分类</a>
-			</div>
+	<div class="side-item">	
+		<ul class="item-ul">
+			<h2 class="item-head select" onclick="handlers.itemAll(event)">所有任务 (<span class="item-all"></span>)</h2>
+			<h2>分类列表</h2>
+		</ul>
+		<div class="add add-item">
+			<a href="#" onclick = "itemAdd.addItem(event)">新增分类</a>
 		</div>
-		<div class="side-task">
-			<div class="task-filter">
-				<ul>
-					<li class="select all" onclick="handlers.finishFilter(this)">所有</li>
-					<li class="finish" onclick="handlers.finishFilter(this)">已完成</li>
-					<li class="unfinish" onclick="handlers.finishFilter(this)">未完成</li>
-				</ul>
-			</div>
-			<div class="task-content">
-				<ul class="task-list">
-				</ul>
-			</div>
-			<div class="add add-task">
-				<a href="#" onclick="handlers.addTask(event)">新增任务</a>
-			</div>
+	</div>
+	<div class="side-task">
+		<div class="task-filter">
+			<ul>
+				<li class="select all" onclick="handlers.finishFilter(this)">所有</li>
+				<li class="finish" onclick="handlers.finishFilter(this)">已完成</li>
+				<li class="unfinish" onclick="handlers.finishFilter(this)">未完成</li>
+			</ul>
+		</div>
+		<div class="task-content">
+			<ul class="task-list">
+			</ul>
+		</div>
+		<div class="add add-task">
+			<a href="#" onclick="handlers.addTask(event)">新增任务</a>
 		</div>
 	</div>
 	<div class="main">
@@ -81,8 +81,8 @@
 					<input type="text" name="item" class="in-itemname"/><br>
 				</div>
 				<div>
-					<button class="confirm-item" onclick = "handlers.confirmItem(event)">确认</button>
-					<button class="cancel-item" onclick = "handlers.cancelItem(event)">取消</button>
+					<button class="confirm-item" onclick = "itemAdd.confirmItem(event)">确认</button>
+					<button class="cancel-item" onclick = "itemAdd.cancelItem(event)">取消</button>
 				</div>
 			</form>
 		</div>
