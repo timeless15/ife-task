@@ -267,6 +267,12 @@ var itemAdd = {
 var taskAdd = {
 	addTask:function(e){
 		e.preventDefault();
+		if(window.innerWidth<768){
+			activeWindow = 2;
+			$(".side-task").style.display = "none";
+			$(".main").style.display = "block";
+			$(".return").style.display = "initial";
+		}
     	$(".show-content").style.display = "none";
     	$(".add-content").style.display = "block";
     	$("input.in-taskname").value="";
@@ -339,9 +345,12 @@ var clickEvent = {
 		
 		removeClass(document.querySelector(".task-filter .select"),"select");
 		addClass($(".task-filter .all"),"select");
-
-		//$(".side-item").style.display = "none";
-		//$(".side-task").style.display = "block";
+		if(window.innerWidth<768){
+			activeWindow = 1;
+			$(".side-item").style.display = "none";
+			$(".side-task").style.display = "block";
+			$(".return").style.display = "initial";
+		}
 		stopHandler(target);
 	},
 	subitemClick:function(target){
@@ -356,15 +365,24 @@ var clickEvent = {
 
 		removeClass(document.querySelector(".task-filter .select"),"select");
 		addClass($(".task-filter .all"),"select");
-
-		//$(".side-item").style.display = "none";
-		//$(".side-task").style.display = "block";
+		if(window.innerWidth<768){
+			activeWindow = 1;
+			$(".side-item").style.display = "none";
+			$(".side-task").style.display = "block";
+			$(".return").style.display = "initial";
+		}	
 		stopHandler(target);
 	},
 	taskClick:function(target){
 		var taskID = parseInt(target.getAttribute("taskid")),	
 			clickTask = task.query(taskID);
 		clickTask.click();
+		if(window.innerWidth<768){
+			activeWindow = 2;
+			$(".side-task").style.display = "none";
+			$(".main").style.display = "block";
+			$(".return").style.display = "initial";
+		}
 	},
 	itemAll:function(e){
 		e.preventDefault();
@@ -374,6 +392,12 @@ var clickEvent = {
 		task.showAll();
 		showTask.sort(sortDate);
 		handlers.sortDate();
+		if(window.innerWidth<768){
+			activeWindow = 1;
+			$(".side-item").style.display = "none";
+			$(".side-task").style.display = "block";
+			$(".return").style.display = "initial";
+		}
 	}
 }                                                                                                                                                                                                                                                                                                                                                                                                                        
 var handlers = {
@@ -482,9 +506,22 @@ var handlers = {
         	$(".content-date").innerHTML = "任务日期";
         	$(".content-text").innerHTML = "任务描述";
         }
+	},
+	return:function(target){
+
+		if(activeWindow==1){
+			activeWindow=0;
+			$(".side-item").style.display = "block";
+			$(".side-task").style.display = "none";
+			$(".return").style.display = "none";
+		}else if(activeWindow==2){
+			activeWindow=1;
+			$(".side-task").style.display = "block";
+			$(".main").style.display = "none";
+		}
 	}
 };
-var showTask = [],showSubItem=0;
+var showTask = [],showSubItem=0,activeWindow=0;
 function sortDate(a,b){
     var c = a.date.split("-");
     var d = b.date.split("-");
