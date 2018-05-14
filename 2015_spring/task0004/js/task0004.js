@@ -541,6 +541,7 @@ function initial(){
 	showTask.sort(sortDate);
 	handlers.sortDate();
 	handlers.updateAllNum();
+	$(".return").style.display="none";
 }
 function initDataBase(){
 	if(!localStorage.item || !localStorage.subitem || !localStorage.task){

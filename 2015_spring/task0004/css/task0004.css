@@ -45,6 +45,9 @@ header h1{
 }
 button.return{
 	display:none;
+	position: absolute;
+	bottom: 0;
+	left: 0;
 }
 main{
 	width:100%;
@@ -68,8 +71,7 @@ main{
 .side-item .item-head{
 	cursor:  pointer;
 }
-.side-item .item-head.select,
-.side-item .item-head:hover{
+.side-item .item-head.select{
 	background-color:#fff;
 }
 .side-item .item-head h2{
@@ -89,8 +91,7 @@ main{
 	background: url(../img/file.png) no-repeat 25px center;
 	position: relative;
 }
-.side-item .item-ul .select .item-wrap,
-.side-item .item-ul .item-wrap:hover {
+.side-item .item-ul .select .item-wrap{
     background: url(../img/file.png) no-repeat 25px center #fff;
 }
 .side-item .subitem-ul .subitem-wrap {
@@ -99,8 +100,7 @@ main{
 	background: url(../img/subfile.png) no-repeat 45px center;
 	position: relative;
 }
-.side-item .subitem-ul .select,
-.side-item .subitem-ul .subitem-wrap:hover{
+.side-item .subitem-ul .select{
 	background: url(../img/subfile.png) no-repeat 45px center #fff;
 }
 
@@ -113,12 +113,7 @@ main{
     background:url(../img/delete.png) no-repeat;
     display:none;
 }
-
 /*hover显示*/
-.side-item .item-ul .item-wrap:hover>.deleteBtn,
-.side-item .subitem-ul .subitem-wrap:hover>.deleteBtn{
-	display:inline;
-}
 .add {
 	position: absolute;
 	background: rgb(240,240,240);
@@ -153,8 +148,7 @@ main{
 	font-size: 15px;
 	cursor:pointer;
 }
-.side-task .task-filter li.select ,
-.side-task .task-filter li:hover{
+.side-task .task-filter li.select{
 	background-color:#fff;
 	border:1px solid rgb(205,205,205);
 }
@@ -171,8 +165,7 @@ main{
 .side-task .task-content .task-list .finish{
 	color:green;
 }
-.side-task .task-content .task-list .select,
-.side-task .task-content .task-list .task-name:hover{
+.side-task .task-content .task-list .select{
 	background-color:rgb(220,220,220);
 	cursor:pointer;
 }
@@ -270,7 +263,7 @@ main{
 }
 
 /*responsive*/
-@media (min-width:768px){
+@media (min-width:769px){
 	.main {
     	margin-left: 460px;
 	}
@@ -285,7 +278,28 @@ main{
 	.side-task{
 		width: 230px;
 		float: left;
-	}   
+	}
+	.side-item .item-head:hover{
+		background-color:#fff;
+	}
+	.side-item .item-ul .item-wrap:hover {
+    	background: url(../img/file.png) no-repeat 25px center #fff;
+	}  
+	.side-item .subitem-ul .subitem-wrap:hover{
+		background: url(../img/subfile.png) no-repeat 45px center #fff;
+	} 
+	.side-item .item-ul .item-wrap:hover>.deleteBtn,
+	.side-item .subitem-ul .subitem-wrap:hover>.deleteBtn{
+		display:inline;
+	}
+	.side-task .task-filter li:hover{
+		background-color:#fff;
+		border:1px solid rgb(205,205,205);
+	}
+	.side-task .task-content .task-list .task-name:hover{
+		background-color:rgb(220,220,220);
+		cursor:pointer;
+	}
 }
 
 @media (max-width:768px){
@@ -306,12 +320,5 @@ main{
 	header h1{
 		text-align:center;
 		padding: 0px;
-	}
-	button.return{
-		display:initial;
-		position:  absolute;
-		bottom: 0px;
-		left: 15px;
-		font-size: 16px;
 	}
 }
