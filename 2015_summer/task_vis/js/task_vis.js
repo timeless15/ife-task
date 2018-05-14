@@ -13,7 +13,7 @@ var vinyls = {
 	"rock":14,
 	"pop":2,
 	"Jazz":12
-}
+};
 //var canvas = document.getElementById("AQICanvas");
 function drawLine(ctx,startX,startY,endX,endY,color){
 	ctx.save();
@@ -28,7 +28,7 @@ function drawBar(ctx,x,y,width,height,color){
 	//width,height:px
 	ctx.save();
 	ctx.fillStyle = color;
-	ctx.fillRect = (x,y,width,height);
+	ctx.fillRect(x,y,width,height);
 	ctx.restore();
 }
 var Barchart = function(options){
@@ -61,7 +61,7 @@ var Barchart = function(options){
 			barIndex++;
 		}
 	}
-}
+};
 var myBarchart = new Barchart({
 	canvas:document.getElementById("AQICanvas"),
 	padding:10,
@@ -69,4 +69,3 @@ var myBarchart = new Barchart({
 	colors:["#a55ca5","#67b6c7","#bccd7a","#eb9743"]
 });
 myBarchart.draw();
-https://code.tutsplus.com/tutorials/how-to-draw-bar-charts-using-javascript-and-html5-canvas--cms-28561
