@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Task VIS</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" href="css/task_vis.css">
+</head>
+<body>
+	<h1>北京2014年空气质量情况</h1>
+	<div class="filter-tab">
+		<form>
+			<input type="checkbox" id="serious" name="type" value="serious" checked>
+			<label for="serious">严重污染</label>
+			<input type="checkbox" id="middle" name="type" value="middle" checked>
+			<label for="middle">中度污染</label>
+			<input type="checkbox" id="light" name="type" value="light" checked>
+			<label for="light">轻度污染</label>
+			<input type="checkbox" id="good" name="type" value="good" checked>
+			<label for="good">良好</label>
+		</form>
+	</div>
+	<canvas id="AQICanvas" width="500" height="500">
+	</canvas>
+</body>
+<script src="js/util.js"></script>
+<script src="js/task_vis.js"></script>
+</html>
