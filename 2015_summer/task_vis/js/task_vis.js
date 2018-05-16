@@ -8,7 +8,8 @@ var testdata = [{
 	"month":"Jan",
 	"AQI":[8,7,9,7]
 }];
-//var canvas = document.getElementById("AQICanvas");
+var checkboxs = document.querySelectorAll("input[name=type]");
+var checkArr = [1, 1, 1, 1];
 function drawLine(ctx,startX,startY,endX,endY,color){
 	ctx.save();
 	ctx.strokeColor = color;
@@ -51,9 +52,11 @@ var Barchart = function(options){
 				initialX = padding + 30;
 			addText(this.ctx, "#000", padding , initialY + 20, month);
 			for(var j=0;j<AQIdata.length;j++){
-				drawBar(this.ctx, initialX, initialY +5 , 10 * AQIdata[j], barHeight-10, this.colors[j]);
-				addText(this.ctx, "#fff", initialX + 10, initialY + 22, AQIdata[j]);
-				initialX += 10 * AQIdata[j];
+				if(checkArr[j]){
+					drawBar(this.ctx, initialX, initialY + 5, 10 * AQIdata[j], barHeight - 10, this.colors[j]);
+					addText(this.ctx, "#fff", initialX + 10, initialY + 22, AQIdata[j]);
+					initialX += 10 * AQIdata[j];
+				}
 			}
 			initialY += barHeight;
 		}
@@ -66,15 +69,15 @@ var myBarchart = new Barchart({
 	colors:["#a55ca5","#67b6c7","#bccd7a","#eb9743"]
 });
 myBarchart.draw();
-
-var checkboxs = document.querySelectorAll("input[name=type]");
-var checkArr = [1,1,1,1];
 for(var i=0,len=checkboxs.length;i<len;i++){
 	checkboxs[i].addEventListener("change",function(){
-		if(this.checked){
-			checkArr[]=1;
-		}else{
-			checkArr[]=0;
-		}console.log(checkArr)
+		var index;
+		if(this.id == "serious") index = 0;
+		else if(this.id == "middle") index = 1;
+		else if(this.id == "light") index = 2;
+		else if(this.id == "good") index = 3
+		if(this.checked) checkArr[index] = 1;
+		else checkArr[index] = 0;
+		myBarchart.draw();
 	})
 }
