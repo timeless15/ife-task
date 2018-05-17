@@ -347,11 +347,7 @@ var clickEvent = {
 		removeClass(document.querySelector(".task-filter .select"), "select");
 		addClass($(".task-filter .all"), "select");
 		if (width < 768) {
-			activeWindow = 1;
-			$(".side-item").style.left = -width+"px";
-			$(".side-task").style.left = "0px";
-			$(".main").style.left = width+"px";
-			$(".return").style.display = "initial";
+			handlers.displayOrder();
 		}
 		stopHandler(target);
 	},
@@ -368,11 +364,7 @@ var clickEvent = {
 		removeClass(document.querySelector(".task-filter .select"), "select");
 		addClass($(".task-filter .all"), "select");
 		if (width < 768) {
-			activeWindow = 1;
-			$(".side-item").style.left = -width + "px";
-			$(".side-task").style.left = "0px";
-			$(".main").style.left = width + "px";
-			$(".return").style.display = "initial";
+			handlers.displayOrder();
 		}
 		stopHandler(target);
 	},
@@ -381,11 +373,7 @@ var clickEvent = {
 			clickTask = task.query(taskID);
 		clickTask.click();
 		if (width < 768) {
-			activeWindow = 2;
-			$(".side-item").style.left = -2*width + "px";
-			$(".side-task").style.left = -width + "px";
-			$(".main").style.left = "0px";
-			$(".return").style.display = "initial";
+			handlers.displayOrder();
 		}
 	},
 	itemAll: function (e) {
@@ -397,11 +385,7 @@ var clickEvent = {
 		showTask.sort(sortDate);
 		handlers.sortDate();
 		if (width < 768) {
-			activeWindow = 1;
-			$(".side-item").style.left = -width + "px";
-			$(".side-task").style.left = "0px";
-			$(".main").style.left = width + "px";
-			$(".return").style.display = "initial";
+			handlers.displayOrder();
 		}
 	}
 }
@@ -512,17 +496,31 @@ var handlers = {
 			$(".content-text").innerHTML = "任务描述";
 		}
 	},
-	return: function (target) {
-
+	displayOrder:function(){
+		if (activeWindow == 0) {
+			activeWindow = 1;
+			$(".return").style.visibility = "visible";
+			$(".side-item").style.left = -width + "px";
+			$(".side-task").style.left = "0px";
+			$(".main").style.left = width + "px";
+		} else if (activeWindow == 1) {
+			activeWindow = 2;
+			$(".return").style.visibility = "visible";
+			$(".side-item").style.left = -2 * width + "px";
+			$(".side-task").style.left = -width + "px";
+			$(".main").style.left = "0px";
+		}
+	},
+	returnOrder: function () {
 		if (activeWindow == 1) {
 			activeWindow = 0;
+			$(".return").style.visibility = "hidden";
 			$(".side-item").style.left = "0px";
-			$(".side-task").style.left = width + "px";
-			$(".main").style.left = 2 * width +"px";
-			$(".return").style.display = "none";
+			$(".side-task").style.left = width +"px";
+			$(".main").style.left = 2*width + "px";
 		} else if (activeWindow == 2) {
 			activeWindow = 1;
-			$(".side-item").style.left = -width +"0px";
+			$(".side-item").style.left = -width + "px";
 			$(".side-task").style.left = "0px";
 			$(".main").style.left = width + "px";
 		}
@@ -553,12 +551,14 @@ function initial() {
 	showTask.sort(sortDate);
 	handlers.sortDate();
 	handlers.updateAllNum();
-	$(".return").style.display = "none";
-	$(".side-item").style.left = "0px";
-	$(".side-task").style.left = width + "px";
-	$(".main").style.left = width * 2 + "px";
+	if(width<768){
+		$(".side-item").style.left = "0px";
+		$(".side-task").style.left = width + "px";
+		$(".main").style.left = 2 * width + "px";
+	}
+	touchEvent($(".side-task"));
+	touchEvent($(".main"));
 }
-
 function initDataBase() {
 	if (!localStorage.item || !localStorage.subitem || !localStorage.task) {
 		item.data.push(new Item(0, 'Default', [0]));
@@ -624,4 +624,28 @@ function stopHandler(event) {
 	window.event ? window.event.cancelBubble = true : event.stopPropagation();
 }
 initial();
-
+function touchEvent(element){
+	element.addEventListener("touchstart", function (e) {
+		this.startTouch = e.changedTouches[0];
+	});
+	element.addEventListener("touchmove", function (e) {
+		var touch = e.changedTouches[0];
+		var deltaX = touch.pageX - this.startTouch.pageX
+		if (deltaX > 10) {
+			this.isMove = true;
+		}
+		if (deltaX > 0) {
+			this.previousElementSibling.style.left = -(width - deltaX) + "px"
+			this.style.left = deltaX + "px"
+		}
+	});
+	element.addEventListener("touchend", function (e) {
+		this.endTouch = e.changedTouches[0];
+		if ((this.endTouch.pageX - this.startTouch.pageX) > 10 && this.isMove) {
+			handlers.returnOrder();
+		} else {
+			this.previousElementSibling.style.left = -width + "px"
+			this.style.left = "0px"
+		}
+	});
+}
